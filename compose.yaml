@@ -1,0 +1,9 @@
+services:
+  resume-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    command: sh scripts/build-resume.sh

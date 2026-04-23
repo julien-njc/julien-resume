@@ -7,6 +7,9 @@ on:
     paths:
       - "Julien Pireaud.md"
       - "resume.css"
+      - "Dockerfile"
+      - "compose.yaml"
+      - "scripts/build-resume.sh"
       - ".github/workflows/release-resume.yml"
   workflow_dispatch:
 
@@ -21,22 +24,10 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install PDF build dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc wkhtmltopdf
-
       - name: Build PDF
         run: |
-          mkdir -p build
-          pandoc "Julien Pireaud.md" \
-            --from gfm \
-            --standalone \
-            --css resume.css \
-            --metadata title="Julien Pireaud Resume" \
-            --pdf-engine=wkhtmltopdf \
-            --pdf-engine-opt=--enable-local-file-access \
-            -o "build/Julien_Pireaud_Resume.pdf"
+          docker compose build resume-builder
+          docker compose run --rm resume-builder
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
