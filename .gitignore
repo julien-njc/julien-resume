@@ -1,2 +1,8 @@
 build/
 scripts/__pycache__/
+editor/.svelte-kit/
+editor/build/
+editor/dist/
+editor/node_modules/
+editor/src-tauri/gen/
+editor/src-tauri/target/

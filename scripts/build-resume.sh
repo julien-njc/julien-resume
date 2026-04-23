@@ -2,6 +2,8 @@
 
 set -eu
 
+TITLE="$(python3 -c 'import json; print(json.load(open("resume.json"))["name"])')"
+
 python3 scripts/render_resume.py
 python3 scripts/build_ats_docx.py
 
@@ -9,7 +11,7 @@ pandoc "build/Julien_Pireaud_Resume_ATS.md" \
   --from gfm \
   --standalone \
   --css resume-ats.css \
-  --metadata title="Julien Pireaud Resume ATS" \
+  --metadata title="$TITLE" \
   --pdf-engine=wkhtmltopdf \
   --pdf-engine-opt=--enable-local-file-access \
   -o "build/Julien_Pireaud_Resume_ATS.pdf"
@@ -18,7 +20,7 @@ pandoc "build/Julien_Pireaud_Resume_Styled.md" \
   --from gfm \
   --standalone \
   --css resume-stylish.css \
-  --metadata title="Julien Pireaud Resume" \
+  --metadata title="$TITLE" \
   --pdf-engine=wkhtmltopdf \
   --pdf-engine-opt=--enable-local-file-access \
-  -o "build/Julien_Pireaud_Resume_Styled.pdf"
+  -o "build/Julien_Pireaud_Resume.pdf"

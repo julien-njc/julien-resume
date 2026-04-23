@@ -94,3 +94,22 @@ After push, GitHub Actions will generate a new PDF and publish a new release for
 - Generated PDFs are ignored through `.gitignore`
 - The release workflow accumulates one release per commit
 - If Docker is not running locally, `docker compose` commands will fail until the daemon is available
+
+## Desktop Editor
+
+A local Tauri + SvelteKit editor now lives in `editor/`.
+
+From that folder:
+
+```bash
+cd editor
+npm install
+npm run tauri dev
+```
+
+The editor can:
+
+- load and save the parent `resume.json`
+- edit the main resume sections with a graphical form
+- trigger the existing Docker resume build locally
+- show the build output in the app

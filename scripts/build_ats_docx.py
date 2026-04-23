@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 
 from docx import Document
-from docx.enum.section import WD_SECTION
 from docx.shared import Inches, Pt
 
 
@@ -38,6 +37,7 @@ def main():
     OUTPUT.parent.mkdir(exist_ok=True)
 
     document = Document()
+    document.core_properties.title = data["name"]
     section = document.sections[0]
     section.top_margin = Inches(0.55)
     section.bottom_margin = Inches(0.6)
