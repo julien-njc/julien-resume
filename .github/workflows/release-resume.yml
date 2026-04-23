@@ -1,14 +1,17 @@
-name: Build Resume PDF
+name: Build Resume PDFs
 
 on:
   push:
     branches:
       - main
     paths:
-      - "Julien Pireaud.md"
-      - "resume.css"
+      - "resume.json"
+      - "resume-ats.css"
+      - "resume-stylish.css"
       - "Dockerfile"
       - "compose.yaml"
+      - "scripts/build_ats_docx.py"
+      - "scripts/render_resume.py"
       - "scripts/build-resume.sh"
       - ".github/workflows/release-resume.yml"
   workflow_dispatch:
@@ -32,8 +35,11 @@ jobs:
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Julien_Pireaud_Resume_pdf
-          path: build/Julien_Pireaud_Resume.pdf
+          name: Julien_Pireaud_Resume_pdfs
+          path: |
+            build/Julien_Pireaud_Resume_ATS.docx
+            build/Julien_Pireaud_Resume_ATS.pdf
+            build/Julien_Pireaud_Resume_Styled.pdf
 
       - name: Create or update release
         env:
@@ -42,9 +48,16 @@ jobs:
           RELEASE_TITLE: Resume build ${{ github.sha }}
         run: |
           if gh release view "$TAG_NAME" >/dev/null 2>&1; then
-            gh release upload "$TAG_NAME" "build/Julien_Pireaud_Resume.pdf" --clobber
+            gh release upload "$TAG_NAME" \
+              "build/Julien_Pireaud_Resume_ATS.docx" \
+              "build/Julien_Pireaud_Resume_ATS.pdf" \
+              "build/Julien_Pireaud_Resume_Styled.pdf" \
+              --clobber
           else
-            gh release create "$TAG_NAME" "build/Julien_Pireaud_Resume.pdf" \
+            gh release create "$TAG_NAME" \
+              "build/Julien_Pireaud_Resume_ATS.docx" \
+              "build/Julien_Pireaud_Resume_ATS.pdf" \
+              "build/Julien_Pireaud_Resume_Styled.pdf" \
               --title "$RELEASE_TITLE" \
-              --notes "Automated PDF build for commit $GITHUB_SHA."
+              --notes "Automated ATS DOCX, ATS PDF, and styled PDF builds for commit $GITHUB_SHA."
           fi

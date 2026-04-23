@@ -7,6 +7,9 @@ RUN apt-get update \
         ca-certificates \
         fonts-dejavu-core \
         pandoc \
+        poppler-utils \
+        python3 \
+        python3-docx \
         wkhtmltopdf \
     && rm -rf /var/lib/apt/lists/*
 

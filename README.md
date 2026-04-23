@@ -1,13 +1,17 @@
 # Resume Build
 
-This repository stores the resume source in Markdown and generates a PDF version from it.
+This repository stores the resume source as structured data and generates both an ATS-friendly PDF and a styled PDF from that single source.
 
 ## Files
 
-- `Julien Pireaud.md`: main resume source
-- `resume.css`: PDF styling used during rendering
+- `resume.json`: single source of truth for resume content
+- `resume-ats.css`: styling for the ATS-friendly PDF
+- `resume-stylish.css`: styling for the styled PDF
 - `Dockerfile`: build image with `pandoc` and `wkhtmltopdf`
 - `compose.yaml`: local build entrypoint
+- `scripts/render_resume.py`: renders the structured source into ATS and styled Markdown files
+- `scripts/build_ats_docx.py`: generates a tighter ATS `.docx` directly from the structured source
+- `scripts/ats_smoke_test.py`: extracts text from `.docx` or `.pdf` and heuristically parses experience blocks
 - `scripts/build-resume.sh`: shared build script used by Docker locally and in GitHub Actions
 - `.github/workflows/release-resume.yml`: CI workflow that builds the PDF and publishes a GitHub release
 
@@ -19,27 +23,20 @@ Build the container image:
 docker compose build resume-builder
 ```
 
-Generate the PDF:
+Generate both PDFs:
 
 ```bash
 docker compose run --rm resume-builder
 ```
 
-The output file is:
+The generated files are:
 
 ```bash
-build/Julien_Pireaud_Resume.pdf
-```
-
-## Custom Input Or Output
-
-You can override the input or output path with environment variables:
-
-```bash
-docker compose run --rm \
-  -e INPUT_FILE="Julien Pireaud.md" \
-  -e OUTPUT_FILE="build/custom-resume.pdf" \
-  resume-builder
+build/Julien_Pireaud_Resume_ATS.md
+build/Julien_Pireaud_Resume_Styled.md
+build/Julien_Pireaud_Resume_ATS.docx
+build/Julien_Pireaud_Resume_ATS.pdf
+build/Julien_Pireaud_Resume_Styled.pdf
 ```
 
 ## GitHub Actions
@@ -49,17 +46,17 @@ On each push to `main` that changes the resume or build files, GitHub Actions:
 1. Checks out the repository
 2. Builds the Docker image
 3. Runs the shared resume build
-4. Uploads the generated PDF as a workflow artifact
-5. Creates a GitHub release tagged `resume-<commit-sha>` and attaches the PDF
+4. Uploads the ATS DOCX, ATS PDF, and styled PDF as workflow artifacts
+5. Creates a GitHub release tagged `resume-<commit-sha>` and attaches all generated deliverables
 
 This keeps local builds and CI builds aligned by using the same Docker and shell entrypoint.
 
 ## Typical Update Flow
 
-Edit the resume:
+Edit the structured source:
 
 ```bash
-Julien Pireaud.md
+resume.json
 ```
 
 Rebuild locally:
@@ -67,6 +64,20 @@ Rebuild locally:
 ```bash
 docker compose run --rm resume-builder
 ```
+
+Run the local ATS smoke test against the generated ATS `.docx`:
+
+```bash
+docker compose run --rm resume-builder python3 scripts/ats_smoke_test.py build/Julien_Pireaud_Resume_ATS.docx
+```
+
+Run it against the ATS `.pdf`:
+
+```bash
+docker compose run --rm resume-builder python3 scripts/ats_smoke_test.py build/Julien_Pireaud_Resume_ATS.pdf
+```
+
+The script prints extracted jobs and warnings for title, company, and bullet count mismatches compared with `resume.json`.
 
 Commit and push:
 
