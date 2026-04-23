@@ -1,0 +1,59 @@
+name: Build Resume PDF
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Julien Pireaud.md"
+      - "resume.css"
+      - ".github/workflows/release-resume.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install PDF build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc wkhtmltopdf
+
+      - name: Build PDF
+        run: |
+          mkdir -p build
+          pandoc "Julien Pireaud.md" \
+            --from gfm \
+            --standalone \
+            --css resume.css \
+            --metadata title="Julien Pireaud Resume" \
+            --pdf-engine=wkhtmltopdf \
+            --pdf-engine-opt=--enable-local-file-access \
+            -o "build/Julien_Pireaud_Resume.pdf"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Julien_Pireaud_Resume_pdf
+          path: build/Julien_Pireaud_Resume.pdf
+
+      - name: Create or update release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: resume-${{ github.sha }}
+          RELEASE_TITLE: Resume build ${{ github.sha }}
+        run: |
+          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
+            gh release upload "$TAG_NAME" "build/Julien_Pireaud_Resume.pdf" --clobber
+          else
+            gh release create "$TAG_NAME" "build/Julien_Pireaud_Resume.pdf" \
+              --title "$RELEASE_TITLE" \
+              --notes "Automated PDF build for commit $GITHUB_SHA."
+          fi

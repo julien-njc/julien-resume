@@ -1,0 +1,54 @@
+@page {
+  margin: 0.55in 0.7in 0.6in 0.7in;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.28;
+  color: #111111;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  color: #111111;
+  margin-top: 0.8em;
+  margin-bottom: 0.2em;
+}
+
+h2 {
+  font-size: 12pt;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid #d7d7d7;
+  padding-bottom: 0.08in;
+}
+
+h1 {
+  font-size: 20pt;
+  margin-top: 0;
+  margin-bottom: 0.16in;
+}
+
+p {
+  margin: 0.12em 0 0.32em 0;
+}
+
+ul {
+  margin: 0.12em 0 0.45em 0;
+  padding-left: 1.1em;
+}
+
+li {
+  margin: 0 0 0.14em 0;
+}
+
+code {
+  font-family: Menlo, Consolas, monospace;
+  font-size: 0.96em;
+}
