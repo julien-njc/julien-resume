@@ -36,7 +36,7 @@ build/Julien_Pireaud_Resume_ATS.md
 build/Julien_Pireaud_Resume_Styled.md
 build/Julien_Pireaud_Resume_ATS.docx
 build/Julien_Pireaud_Resume_ATS.pdf
-build/Julien_Pireaud_Resume_Styled.pdf
+build/Julien_Pireaud_Resume.pdf
 ```
 
 ## GitHub Actions

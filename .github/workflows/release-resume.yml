@@ -39,7 +39,7 @@ jobs:
           path: |
             build/Julien_Pireaud_Resume_ATS.docx
             build/Julien_Pireaud_Resume_ATS.pdf
-            build/Julien_Pireaud_Resume_Styled.pdf
+            build/Julien_Pireaud_Resume.pdf
 
       - name: Create or update release
         env:
@@ -51,13 +51,13 @@ jobs:
             gh release upload "$TAG_NAME" \
               "build/Julien_Pireaud_Resume_ATS.docx" \
               "build/Julien_Pireaud_Resume_ATS.pdf" \
-              "build/Julien_Pireaud_Resume_Styled.pdf" \
+              "build/Julien_Pireaud_Resume.pdf" \
               --clobber
           else
             gh release create "$TAG_NAME" \
               "build/Julien_Pireaud_Resume_ATS.docx" \
               "build/Julien_Pireaud_Resume_ATS.pdf" \
-              "build/Julien_Pireaud_Resume_Styled.pdf" \
+              "build/Julien_Pireaud_Resume.pdf" \
               --title "$RELEASE_TITLE" \
               --notes "Automated ATS DOCX, ATS PDF, and styled PDF builds for commit $GITHUB_SHA."
           fi
