@@ -89,11 +89,11 @@ def main():
         set_spacing(spacer, after=3)
 
     heading("Education")
-    education = data["education"]
-    add_line(document, None, "Degree: ", education["degree"], after=1)
-    add_line(document, None, "Field of Study: ", education["field_of_study"], after=1)
-    add_line(document, None, "School: ", education["school"], after=1)
-    add_line(document, None, "Graduation Date: ", education["graduation_date"], after=4)
+    for edu in data["education"]:
+        add_line(document, None, "Degree: ", edu["degree"], after=1)
+        add_line(document, None, "Field of Study: ", edu["field_of_study"], after=1)
+        add_line(document, None, "School: ", edu["school"], after=1)
+        add_line(document, None, "Graduation Date: ", edu["graduation_date"], after=4)
 
     heading("Languages")
     for language in data["languages"]:

@@ -39,18 +39,14 @@ def render_ats(data: dict) -> str:
         parts.append(f"{role['location']} | {role['dates']}\n")
         parts.append(bullets(role["bullets"]))
 
-    education = data["education"]
-    parts.extend(
-        [
-            section("Education"),
-            f"Degree: {education['degree']}\n",
-            f"Field of Study: {education['field_of_study']}\n",
-            f"School: {education['school']}\n",
-            f"Graduation Date: {education['graduation_date']}\n",
-            section("Languages"),
-            bullets(data["languages"])
-        ]
-    )
+    parts.append(section("Education"))
+    for edu in data["education"]:
+        parts.append(f"Degree: {edu['degree']}\n")
+        parts.append(f"Field of Study: {edu['field_of_study']}\n")
+        parts.append(f"School: {edu['school']}\n")
+        parts.append(f"Graduation Date: {edu['graduation_date']}\n")
+
+    parts.extend([section("Languages"), bullets(data["languages"])])
 
     return "\n".join(parts).strip() + "\n"
 
@@ -79,16 +75,12 @@ def render_stylish(data: dict) -> str:
             parts.append(f"*Additional Role:* {role['additional_role']}\n")
         parts.append(bullets(role["bullets"]))
 
-    education = data["education"]
-    parts.extend(
-        [
-            section("Education"),
-            f"**{education['school']}**\n",
-            f"{education['degree']}, {education['field_of_study']} | {education['graduation_date']}\n",
-            section("Languages"),
-            ", ".join(data["languages"]) + "\n"
-        ]
-    )
+    parts.append(section("Education"))
+    for edu in data["education"]:
+        parts.append(f"**{edu['school']}**\n")
+        parts.append(f"{edu['degree']}, {edu['field_of_study']} | {edu['graduation_date']}\n")
+
+    parts.extend([section("Languages"), ", ".join(data["languages"]) + "\n"])
 
     return "\n".join(parts).strip() + "\n"
 

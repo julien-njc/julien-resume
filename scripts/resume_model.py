@@ -17,37 +17,45 @@ def _profile_index(profiles: list[dict]) -> dict[str, dict]:
     return {profile["id"]: profile for profile in profiles}
 
 
-def _entry_index(entries: list[dict]) -> dict[str, dict]:
-    return {entry["id"]: entry for entry in entries}
-
-
-def _resolve_skills(skills: list[dict], selected_ids: list[str]) -> dict[str, list[str]]:
-    skill_map = _entry_index(skills)
+def _resolve_skills(skills: list[dict], active_profile_id: str) -> dict[str, list[str]]:
     grouped: dict[str, list[str]] = {}
-    for skill_id in selected_ids:
-        skill = skill_map.get(skill_id)
-        if not skill:
+    for skill in skills:
+        if active_profile_id not in skill.get("profile_ids", []):
             continue
         grouped.setdefault(skill["category"], []).append(skill["label"])
     return grouped
 
 
-def _resolve_experience(
-    experience: list[dict],
-    selected_ids: list[str],
-    overrides: dict[str, dict],
-) -> list[dict]:
-    experience_map = _entry_index(experience)
+def _resolve_experience(experience: list[dict], active_profile_id: str) -> list[dict]:
     resolved = []
-    for experience_id in selected_ids:
-        role = experience_map.get(experience_id)
-        if not role:
+    for entry in experience:
+        if active_profile_id not in entry.get("profile_ids", []):
             continue
-        merged = deepcopy(role)
-        for key, value in overrides.get(experience_id, {}).items():
+        merged = deepcopy(entry)
+        override = merged.pop("overrides", {}).get(active_profile_id, {})
+        for key, value in override.items():
             merged[key] = value
+        merged.pop("profile_ids", None)
         resolved.append(merged)
     return resolved
+
+
+def _resolve_education(education: list[dict], active_profile_id: str) -> list[dict]:
+    return [
+        {k: v for k, v in entry.items() if k not in ("profile_ids", "id")}
+        for entry in education
+        if active_profile_id in entry.get("profile_ids", [])
+    ]
+
+
+def _resolve_languages(languages: list[dict], active_profile_id: str) -> list[str]:
+    result = []
+    for lang in languages:
+        if active_profile_id not in lang.get("profile_ids", []):
+            continue
+        proficiency = lang.get("proficiency", "")
+        result.append(f"{lang['name']} ({proficiency})" if proficiency else lang["name"])
+    return result
 
 
 def load_resume(path: Path = SOURCE, profile_id: str | None = None) -> dict:
@@ -66,14 +74,10 @@ def load_resume(path: Path = SOURCE, profile_id: str | None = None) -> dict:
     return {
         **basics,
         "summary": profile["summary"],
-        "skills": _resolve_skills(data["skills"], profile.get("skill_ids", [])),
-        "experience": _resolve_experience(
-            data["experience"],
-            profile.get("experience_ids", []),
-            profile.get("experience_overrides", {}),
-        ),
-        "education": data["education"],
-        "languages": data["languages"],
+        "skills": _resolve_skills(data["skills"], active_profile_id),
+        "experience": _resolve_experience(data["experience"], active_profile_id),
+        "education": _resolve_education(data.get("education", []), active_profile_id),
+        "languages": _resolve_languages(data.get("languages", []), active_profile_id),
         "active_profile": {
             "id": profile["id"],
             "label": profile["label"],

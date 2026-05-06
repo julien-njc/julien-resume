@@ -8,354 +8,67 @@
     "github": "https://github.com/julien-njc",
     "website": "https://njc-software.com"
   },
+  "writing_style": {
+    "context": ""
+  },
   "active_profile_id": "applied-science-software",
   "profiles": [
     {
       "id": "applied-science-software",
       "label": "Applied Science / Data Systems",
       "summary": "Software engineer with 15+ years of experience building production software across data pipelines, scientific computing, backend services, and C++/mobile systems. Recent work includes Python-based event-driven pipelines on AWS for wearable health data, Parquet transformation workflows, ML-oriented scoring jobs, and HPC command-line simulation tooling for research. Strong debugging discipline, systems thinking, and a correctness-focused approach to software used for real-world decisions.",
-      "skill_ids": [
-        "lang-python",
-        "lang-cpp",
-        "lang-javascript",
-        "lang-swift",
-        "data-ml-pipelines",
-        "data-etl",
-        "data-parquet",
-        "data-sensor",
-        "backend-aws",
-        "backend-s3",
-        "backend-sqs",
-        "backend-lambda",
-        "backend-django",
-        "backend-drf",
-        "backend-rest",
-        "backend-docker",
-        "backend-ecs",
-        "systems-distributed",
-        "systems-hpc",
-        "systems-cli",
-        "systems-git",
-        "systems-testing",
-        "web-sveltekit",
-        "mobile-watchos"
-      ],
-      "experience_ids": [
-        "lifeadapt",
-        "wsu",
-        "njc",
-        "sensopia",
-        "autodesk"
-      ],
-      "experience_overrides": {
-        "lifeadapt": {
-          "job_title": "Senior Software Engineer",
-          "bullets": [
-            "Designed a Python and AWS pipeline to collect Apple Watch study data on charging events and transform raw sensor feeds into analysis-ready Parquet datasets.",
-            "Built Django REST and event-driven workflows across S3, Lambda, and SQS to preprocess uploads, orchestrate scoring jobs, and deliver near-real-time health feedback.",
-            "Collaborated with Prof. Larry Holder on ML-driven score computation and interpretation for geolocation, motion, heart-rate, and behavior signals.",
-            "Evaluated serverless and containerized execution models, improving recovery, observability, and debugging for long-running distributed jobs."
-          ]
-        },
-        "wsu": {
-          "bullets": [
-            "Refactored a legacy Windows MFC simulator into a reusable C++ library and command-line tool for HPC runs against climate prediction datasets.",
-            "Improved correctness and reproducibility by moving analytical workflows from spreadsheet and R-based processes into compiled code used in scientific research.",
-            "Supported large batch simulations, performance tuning, and interpretable outputs for domain collaborators on colony survival modeling."
-          ]
-        },
-        "njc": {
-          "bullets": [
-            "Delivered software projects spanning Python and Django backends, SvelteKit dashboards, and cloud-integrated workflows for data-driven products.",
-            "Designed maintainable API and storage integrations using AWS and Firebase while balancing rapid delivery with long-term operability."
-          ]
-        },
-        "sensopia": {
-          "bullets": [
-            "Led production iOS work for magicplan while contributing shared C++ core libraries used across platforms.",
-            "Improved stability, performance, and release quality for a product used by more than 20 million users."
-          ]
-        },
-        "autodesk": {
-          "bullets": [
-            "Developed C++ tools for FBX and Maya pipelines and supported customers integrating middleware into production game workflows.",
-            "Improved Unreal Engine integration for navigation and character systems in performance-sensitive environments."
-          ]
-        }
-      }
+      "chips": ["Python", "C++", "AWS", "Django", "HPC"]
     },
     {
       "id": "ios-product-engineering",
       "label": "iOS / Product Engineering",
       "summary": "Senior Software Engineer with 15+ years of experience in iOS development, C++ systems, and full-stack engineering. Proven track record building and scaling mobile applications used by millions of users. Strong expertise in Swift, SwiftUI, UIKit, Objective-C, and C++. Experienced in performance optimization, cross-platform architecture, and backend integration using AWS, Django, and Firebase.",
-      "skill_ids": [
-        "lang-swift",
-        "lang-objective-c",
-        "lang-objective-cpp",
-        "lang-cpp",
-        "lang-python",
-        "mobile-ios",
-        "mobile-swiftui",
-        "mobile-uikit",
-        "mobile-watchos",
-        "frameworks-swift-testing",
-        "frameworks-swiftdata",
-        "frameworks-swift-concurrency",
-        "frameworks-gcd",
-        "frameworks-realitykit",
-        "backend-aws",
-        "backend-firebase",
-        "backend-django",
-        "backend-rest",
-        "web-sveltekit",
-        "web-react",
-        "systems-git",
-        "systems-testing"
-      ],
-      "experience_ids": [
-        "njc",
-        "lifeadapt",
-        "sensopia",
-        "autodesk",
-        "wsu",
-        "marson"
-      ],
-      "experience_overrides": {
-        "njc": {
-          "bullets": [
-            "Developed iOS applications using Swift and SwiftUI with iCloud synchronization.",
-            "Built AR features using RealityKit.",
-            "Built dashboards using Svelte and SvelteKit.",
-            "Designed backend systems using Django, Firebase, and AWS."
-          ]
-        },
-        "lifeadapt": {
-          "bullets": [
-            "Led development of an iOS cognitive health platform.",
-            "Built real-time data pipelines using Django and AWS.",
-            "Managed cross-functional teams."
-          ]
-        },
-        "wsu": {
-          "bullets": [
-            "Built high-performance C++ simulation tools.",
-            "Refactored an MFC application into a command-line bee population dynamics simulator for HPC environments.",
-            "Optimized scientific models by migrating workflows from Excel and R to C++.",
-            "Worked on React and Spring Boot applications."
-          ]
-        },
-        "sensopia": {
-          "bullets": [
-            "Led iOS development for magicplan, used by more than 20 million users.",
-            "Built cross-platform C++ core libraries.",
-            "Improved application stability and performance."
-          ]
-        },
-        "autodesk": {
-          "bullets": [
-            "Developed C++ tools for FBX and Maya pipelines.",
-            "Supported game customers integrating HumanIK and Kynapse middleware.",
-            "Improved Kynapse Unreal Engine integration for BioShock Infinite skyline systems."
-          ]
-        },
-        "marson": {
-          "bullets": [
-            "Built PHP and MySQL applications."
-          ]
-        }
-      }
+      "chips": ["SwiftUI", "UIKit", "Objective-C++", "C++", "Apple Watch", "RealityKit"]
     }
   ],
   "skills": [
-    {
-      "id": "lang-python",
-      "category": "Languages",
-      "label": "Python"
-    },
-    {
-      "id": "lang-cpp",
-      "category": "Languages",
-      "label": "C++"
-    },
-    {
-      "id": "lang-swift",
-      "category": "Languages",
-      "label": "Swift"
-    },
-    {
-      "id": "lang-objective-c",
-      "category": "Languages",
-      "label": "Objective-C"
-    },
-    {
-      "id": "lang-objective-cpp",
-      "category": "Languages",
-      "label": "Objective-C++"
-    },
-    {
-      "id": "lang-javascript",
-      "category": "Languages",
-      "label": "JavaScript"
-    },
-    {
-      "id": "lang-php",
-      "category": "Languages",
-      "label": "PHP"
-    },
-    {
-      "id": "mobile-ios",
-      "category": "Mobile Development",
-      "label": "iOS"
-    },
-    {
-      "id": "mobile-swiftui",
-      "category": "Mobile Development",
-      "label": "SwiftUI"
-    },
-    {
-      "id": "mobile-uikit",
-      "category": "Mobile Development",
-      "label": "UIKit"
-    },
-    {
-      "id": "mobile-watchos",
-      "category": "Mobile Development",
-      "label": "watchOS"
-    },
-    {
-      "id": "frameworks-swift-testing",
-      "category": "Frameworks",
-      "label": "Swift Testing"
-    },
-    {
-      "id": "frameworks-swiftdata",
-      "category": "Frameworks",
-      "label": "SwiftData"
-    },
-    {
-      "id": "frameworks-swift-concurrency",
-      "category": "Frameworks",
-      "label": "Swift Concurrency"
-    },
-    {
-      "id": "frameworks-gcd",
-      "category": "Frameworks",
-      "label": "Grand Central Dispatch"
-    },
-    {
-      "id": "frameworks-realitykit",
-      "category": "Frameworks",
-      "label": "RealityKit"
-    },
-    {
-      "id": "data-ml-pipelines",
-      "category": "Data and ML",
-      "label": "ML Pipelines"
-    },
-    {
-      "id": "data-etl",
-      "category": "Data and ML",
-      "label": "ETL and Event-Driven Processing"
-    },
-    {
-      "id": "data-parquet",
-      "category": "Data and ML",
-      "label": "Parquet Data Processing"
-    },
-    {
-      "id": "data-sensor",
-      "category": "Data and ML",
-      "label": "Sensor and Wearable Data Workflows"
-    },
-    {
-      "id": "backend-aws",
-      "category": "Backend and Cloud",
-      "label": "AWS"
-    },
-    {
-      "id": "backend-s3",
-      "category": "Backend and Cloud",
-      "label": "Amazon S3"
-    },
-    {
-      "id": "backend-sqs",
-      "category": "Backend and Cloud",
-      "label": "Amazon SQS"
-    },
-    {
-      "id": "backend-lambda",
-      "category": "Backend and Cloud",
-      "label": "AWS Lambda"
-    },
-    {
-      "id": "backend-django",
-      "category": "Backend and Cloud",
-      "label": "Django"
-    },
-    {
-      "id": "backend-drf",
-      "category": "Backend and Cloud",
-      "label": "Django REST Framework"
-    },
-    {
-      "id": "backend-rest",
-      "category": "Backend and Cloud",
-      "label": "REST APIs"
-    },
-    {
-      "id": "backend-docker",
-      "category": "Backend and Cloud",
-      "label": "Docker"
-    },
-    {
-      "id": "backend-ecs",
-      "category": "Backend and Cloud",
-      "label": "Amazon ECS"
-    },
-    {
-      "id": "backend-firebase",
-      "category": "Backend and Cloud",
-      "label": "Firebase"
-    },
-    {
-      "id": "web-react",
-      "category": "Web",
-      "label": "React"
-    },
-    {
-      "id": "web-sveltekit",
-      "category": "Web",
-      "label": "SvelteKit"
-    },
-    {
-      "id": "systems-hpc",
-      "category": "Systems and Delivery",
-      "label": "HPC Command-Line Workflows"
-    },
-    {
-      "id": "systems-cli",
-      "category": "Systems and Delivery",
-      "label": "CLI Tooling"
-    },
-    {
-      "id": "systems-distributed",
-      "category": "Systems and Delivery",
-      "label": "Distributed Job Orchestration"
-    },
-    {
-      "id": "systems-git",
-      "category": "Systems and Delivery",
-      "label": "Git"
-    },
-    {
-      "id": "systems-testing",
-      "category": "Systems and Delivery",
-      "label": "Testing and Validation"
-    }
+    { "id": "lang-python",          "category": "Languages",             "label": "Python",                             "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "lang-cpp",             "category": "Languages",             "label": "C++",                                "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "lang-swift",           "category": "Languages",             "label": "Swift",                              "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "lang-objective-c",     "category": "Languages",             "label": "Objective-C",                        "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "lang-objective-cpp",   "category": "Languages",             "label": "Objective-C++",                      "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "lang-javascript",      "category": "Languages",             "label": "JavaScript",                         "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "lang-php",             "category": "Languages",             "label": "PHP",                                "profile_ids": [], "years_of_experience": null, "usage_examples": [] },
+    { "id": "mobile-ios",           "category": "Mobile Development",    "label": "iOS",                                "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "mobile-swiftui",       "category": "Mobile Development",    "label": "SwiftUI",                            "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "mobile-uikit",         "category": "Mobile Development",    "label": "UIKit",                              "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "mobile-watchos",       "category": "Mobile Development",    "label": "watchOS",                            "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "frameworks-swift-testing",     "category": "Frameworks",   "label": "Swift Testing",                      "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "frameworks-swiftdata",         "category": "Frameworks",   "label": "SwiftData",                          "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "frameworks-swift-concurrency", "category": "Frameworks",   "label": "Swift Concurrency",                  "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "frameworks-gcd",               "category": "Frameworks",   "label": "Grand Central Dispatch",             "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "frameworks-realitykit",        "category": "Frameworks",   "label": "RealityKit",                         "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "data-ml-pipelines",    "category": "Data and ML",           "label": "ML Pipelines",                       "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "data-etl",             "category": "Data and ML",           "label": "ETL and Event-Driven Processing",    "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "data-parquet",         "category": "Data and ML",           "label": "Parquet Data Processing",            "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "data-sensor",          "category": "Data and ML",           "label": "Sensor and Wearable Data Workflows", "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-aws",          "category": "Backend and Cloud",     "label": "AWS",                                "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-s3",           "category": "Backend and Cloud",     "label": "Amazon S3",                          "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-sqs",          "category": "Backend and Cloud",     "label": "Amazon SQS",                         "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-lambda",       "category": "Backend and Cloud",     "label": "AWS Lambda",                         "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-django",       "category": "Backend and Cloud",     "label": "Django",                             "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-drf",          "category": "Backend and Cloud",     "label": "Django REST Framework",              "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-rest",         "category": "Backend and Cloud",     "label": "REST APIs",                          "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-docker",       "category": "Backend and Cloud",     "label": "Docker",                             "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-ecs",          "category": "Backend and Cloud",     "label": "Amazon ECS",                         "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "backend-firebase",     "category": "Backend and Cloud",     "label": "Firebase",                           "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "web-react",            "category": "Web",                   "label": "React",                              "profile_ids": ["ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "web-sveltekit",        "category": "Web",                   "label": "SvelteKit",                          "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "systems-hpc",          "category": "Systems and Delivery",  "label": "HPC Command-Line Workflows",         "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "systems-cli",          "category": "Systems and Delivery",  "label": "CLI Tooling",                        "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "systems-distributed",  "category": "Systems and Delivery",  "label": "Distributed Job Orchestration",      "profile_ids": ["applied-science-software"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "systems-git",          "category": "Systems and Delivery",  "label": "Git",                                "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] },
+    { "id": "systems-testing",      "category": "Systems and Delivery",  "label": "Testing and Validation",             "profile_ids": ["applied-science-software", "ios-product-engineering"], "years_of_experience": null, "usage_examples": [] }
   ],
   "experience": [
     {
       "id": "njc",
+      "profile_ids": ["applied-science-software", "ios-product-engineering"],
       "employer": "NJC Software LLC",
       "job_title": "Senior Software Engineer",
       "location": "Remote, USA",
@@ -365,10 +78,27 @@
         "Delivered custom software across mobile, web, and backend projects.",
         "Built iOS applications, Svelte dashboards, and cloud-backed integrations for clients.",
         "Designed maintainable architectures using Swift, Django, Firebase, and AWS."
-      ]
+      ],
+      "overrides": {
+        "applied-science-software": {
+          "bullets": [
+            "Delivered software projects spanning Python and Django backends, SvelteKit dashboards, and cloud-integrated workflows for data-driven products.",
+            "Designed maintainable API and storage integrations using AWS and Firebase while balancing rapid delivery with long-term operability."
+          ]
+        },
+        "ios-product-engineering": {
+          "bullets": [
+            "Developed iOS applications using Swift and SwiftUI with iCloud synchronization.",
+            "Built AR features using RealityKit.",
+            "Built dashboards using Svelte and SvelteKit.",
+            "Designed backend systems using Django, Firebase, and AWS."
+          ]
+        }
+      }
     },
     {
       "id": "lifeadapt",
+      "profile_ids": ["applied-science-software", "ios-product-engineering"],
       "employer": "Life Adapt Inc",
       "job_title": "Senior Software Engineer",
       "location": "Remote, USA",
@@ -378,10 +108,29 @@
         "Led engineering across mobile and backend systems for a cognitive health platform.",
         "Built data collection and processing workflows using Django and AWS.",
         "Worked across product delivery, infrastructure decisions, and team coordination."
-      ]
+      ],
+      "overrides": {
+        "applied-science-software": {
+          "job_title": "Senior Software Engineer",
+          "bullets": [
+            "Designed a Python and AWS pipeline to collect Apple Watch study data on charging events and transform raw sensor feeds into analysis-ready Parquet datasets.",
+            "Built Django REST and event-driven workflows across S3, Lambda, and SQS to preprocess uploads, orchestrate scoring jobs, and deliver near-real-time health feedback.",
+            "Collaborated with Prof. Larry Holder on ML-driven score computation and interpretation for geolocation, motion, heart-rate, and behavior signals.",
+            "Evaluated serverless and containerized execution models, improving recovery, observability, and debugging for long-running distributed jobs."
+          ]
+        },
+        "ios-product-engineering": {
+          "bullets": [
+            "Led development of an iOS cognitive health platform.",
+            "Built real-time data pipelines using Django and AWS.",
+            "Managed cross-functional teams."
+          ]
+        }
+      }
     },
     {
       "id": "wsu",
+      "profile_ids": ["applied-science-software", "ios-product-engineering"],
       "employer": "Washington State University",
       "job_title": "Senior Software Engineer",
       "location": "Pullman, WA, USA",
@@ -390,10 +139,28 @@
         "Built high-performance C++ simulation tools for scientific workloads.",
         "Refactored a legacy MFC application into a command-line bee population dynamics simulator for HPC environments.",
         "Optimized analytical workflows by migrating spreadsheet and R-based steps into compiled tooling."
-      ]
+      ],
+      "overrides": {
+        "applied-science-software": {
+          "bullets": [
+            "Refactored a legacy Windows MFC simulator into a reusable C++ library and command-line tool for HPC runs against climate prediction datasets.",
+            "Improved correctness and reproducibility by moving analytical workflows from spreadsheet and R-based processes into compiled code used in scientific research.",
+            "Supported large batch simulations, performance tuning, and interpretable outputs for domain collaborators on colony survival modeling."
+          ]
+        },
+        "ios-product-engineering": {
+          "bullets": [
+            "Built high-performance C++ simulation tools.",
+            "Refactored an MFC application into a command-line bee population dynamics simulator for HPC environments.",
+            "Optimized scientific models by migrating workflows from Excel and R to C++.",
+            "Worked on React and Spring Boot applications."
+          ]
+        }
+      }
     },
     {
       "id": "sensopia",
+      "profile_ids": ["applied-science-software", "ios-product-engineering"],
       "employer": "Sensopia Inc",
       "job_title": "Senior Mobile Engineer",
       "location": "Montreal, QC, Canada",
@@ -402,10 +169,26 @@
         "Led iOS development for magicplan, used by more than 20 million users.",
         "Built cross-platform C++ core libraries.",
         "Improved application stability and performance."
-      ]
+      ],
+      "overrides": {
+        "applied-science-software": {
+          "bullets": [
+            "Led production iOS work for magicplan while contributing shared C++ core libraries used across platforms.",
+            "Improved stability, performance, and release quality for a product used by more than 20 million users."
+          ]
+        },
+        "ios-product-engineering": {
+          "bullets": [
+            "Led iOS development for magicplan, used by more than 20 million users.",
+            "Built cross-platform C++ core libraries.",
+            "Improved application stability and performance."
+          ]
+        }
+      }
     },
     {
       "id": "autodesk",
+      "profile_ids": ["applied-science-software", "ios-product-engineering"],
       "employer": "Autodesk Inc",
       "job_title": "Software Engineer",
       "location": "Montreal, QC, Canada",
@@ -414,28 +197,56 @@
         "Developed C++ tools for FBX and Maya pipelines.",
         "Supported game customers integrating HumanIK and Kynapse middleware.",
         "Improved Unreal Engine integration for large production workflows."
-      ]
+      ],
+      "overrides": {
+        "applied-science-software": {
+          "bullets": [
+            "Developed C++ tools for FBX and Maya pipelines and supported customers integrating middleware into production game workflows.",
+            "Improved Unreal Engine integration for navigation and character systems in performance-sensitive environments."
+          ]
+        },
+        "ios-product-engineering": {
+          "bullets": [
+            "Developed C++ tools for FBX and Maya pipelines.",
+            "Supported game customers integrating HumanIK and Kynapse middleware.",
+            "Improved Kynapse Unreal Engine integration for BioShock Infinite skyline systems."
+          ]
+        }
+      }
     },
     {
       "id": "marson",
+      "profile_ids": ["ios-product-engineering"],
       "employer": "Marson Edition et Consultation Inc.",
       "job_title": "Full-Stack Software Engineer",
       "location": "Montreal, QC, Canada",
       "dates": "Oct 2006 - Jun 2008",
       "bullets": [
-        "Built PHP and MySQL applications."
-      ]
+        "Built PHP and MySQL applications.",
+        "Re-architected a task management system supporting early mobile platforms such as WAP and PDAs."
+      ],
+      "overrides": {}
     }
   ],
-  "education": {
-    "degree": "M. Sc.",
-    "field_of_study": "Computer Engineering",
-    "school": "Polytech'Lille",
-    "graduation_date": "2006"
-  },
+  "projects": [],
+  "education": [
+    {
+      "id": "polytech-lille",
+      "profile_ids": ["applied-science-software", "ios-product-engineering"],
+      "degree": "M. Sc.",
+      "field_of_study": "Computer Engineering",
+      "school": "Polytech'Lille",
+      "graduation_date": "2006"
+    }
+  ],
+  "certifications": [],
+  "awards": [],
+  "publications": [],
+  "volunteer": [],
+  "references": [],
   "languages": [
-    "French",
-    "English",
-    "Bulgarian (basic)"
+    { "id": "lang-french",     "profile_ids": ["applied-science-software", "ios-product-engineering"], "name": "French",           "proficiency": "Native" },
+    { "id": "lang-english",    "profile_ids": ["applied-science-software", "ios-product-engineering"], "name": "English",          "proficiency": "Fluent" },
+    { "id": "lang-bulgarian",  "profile_ids": [],                                                      "name": "Bulgarian",        "proficiency": "Basic" }
   ]
 }
