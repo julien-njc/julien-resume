@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-import json
 from pathlib import Path
 
 from docx import Document
 from docx.shared import Inches, Pt
 
+from resume_model import load_resume
+
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "resume.json"
 OUTPUT = ROOT / "build" / "Julien_Pireaud_Resume_ATS.docx"
 
 
@@ -22,18 +22,18 @@ def set_spacing(paragraph, before=0, after=0, line=1.0):
 def add_line(document, text, bold_label=None, value=None, style=None, before=0, after=2):
     paragraph = document.add_paragraph(style=style)
     if text is not None:
-      paragraph.add_run(text)
+        paragraph.add_run(text)
     else:
-      if bold_label:
-        run = paragraph.add_run(bold_label)
-        run.bold = True
-      paragraph.add_run(value or "")
+        if bold_label:
+            run = paragraph.add_run(bold_label)
+            run.bold = True
+        paragraph.add_run(value or "")
     set_spacing(paragraph, before=before, after=after)
     return paragraph
 
 
 def main():
-    data = json.loads(SOURCE.read_text())
+    data = load_resume()
     OUTPUT.parent.mkdir(exist_ok=True)
 
     document = Document()

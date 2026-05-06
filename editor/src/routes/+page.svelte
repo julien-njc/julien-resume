@@ -1,19 +1,80 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { invoke } from '@tauri-apps/api/core';
-  import type { BuildResult, ExperienceEntry, GeneratedFile, ResumeData } from '$lib/types';
+  import type {
+    BasicsData,
+    BuildResult,
+    ExperienceEntry,
+    ExperienceOverride,
+    GeneratedFile,
+    ResumeData,
+    ResumeProfile,
+    SkillEntry
+  } from '$lib/types';
 
-  const blankResume = (): ResumeData => ({
+  type LegacyResumeData = {
+    name: string;
+    address: string;
+    email: string;
+    phone: string;
+    linkedin: string;
+    github: string;
+    website: string;
+    summary: string;
+    skills: Record<string, string[]>;
+    experience: Array<{
+      employer: string;
+      job_title: string;
+      location: string;
+      dates: string;
+      additional_role?: string;
+      bullets: string[];
+    }>;
+    education: ResumeData['education'];
+    languages: string[];
+  };
+
+  const blankBasics = (): BasicsData => ({
     name: '',
     address: '',
     email: '',
     phone: '',
     linkedin: '',
     github: '',
-    website: '',
+    website: ''
+  });
+
+  const blankProfile = (id = 'default-profile', label = 'Default Profile'): ResumeProfile => ({
+    id,
+    label,
     summary: '',
-    skills: {},
-    experience: [],
+    skill_ids: [],
+    experience_ids: [],
+    experience_overrides: {}
+  });
+
+  const blankSkill = (id = ''): SkillEntry => ({
+    id,
+    category: '',
+    label: ''
+  });
+
+  const blankExperience = (id = 'experience-1'): ExperienceEntry => ({
+    id,
+    employer: '',
+    job_title: '',
+    location: '',
+    dates: '',
+    additional_role: '',
+    bullets: ['']
+  });
+
+  const blankResume = (): ResumeData => ({
+    basics: blankBasics(),
+    active_profile_id: 'default-profile',
+    profiles: [blankProfile()],
+    skills: [blankSkill('skill-1')],
+    experience: [blankExperience()],
     education: {
       degree: '',
       field_of_study: '',
@@ -23,20 +84,11 @@
     languages: []
   });
 
-  const blankExperience = (): ExperienceEntry => ({
-    employer: '',
-    job_title: '',
-    location: '',
-    dates: '',
-    additional_role: '',
-    bullets: ['']
-  });
-
   let repoRoot = '';
   let resume: ResumeData = blankResume();
-  let selectedExperience = 0;
+  let selectedProfileIndex = 0;
+  let selectedExperienceIndex = 0;
   let languagesDraft = '';
-  let skillDrafts: Record<string, string> = {};
   let notice = '';
   let error = '';
   let buildLog = '';
@@ -50,21 +102,117 @@
       .filter(Boolean);
   }
 
+  function slugify(value: string): string {
+    const slug = value
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return slug || 'item';
+  }
+
+  function uniqueId(base: string, existing: string[]): string {
+    let candidate = base;
+    let counter = 2;
+    while (existing.includes(candidate)) {
+      candidate = `${base}-${counter}`;
+      counter += 1;
+    }
+    return candidate;
+  }
+
+  function isModernResumeData(value: unknown): value is ResumeData {
+    return Boolean(value && typeof value === 'object' && 'basics' in value && 'profiles' in value);
+  }
+
+  function upgradeLegacyResumeData(data: LegacyResumeData): ResumeData {
+    const skills: SkillEntry[] = [];
+    const skillIds: string[] = [];
+    for (const [category, values] of Object.entries(data.skills ?? {})) {
+      values.forEach((label, index) => {
+        const id = uniqueId(`${slugify(category)}-${slugify(label)}`, skills.map((skill) => skill.id));
+        skills.push({ id, category, label });
+        skillIds.push(id);
+      });
+    }
+
+    const experience: ExperienceEntry[] = [];
+    for (const [index, role] of (data.experience ?? []).entries()) {
+      const id = uniqueId(
+        `${slugify(role.employer || 'employer')}-${slugify(role.job_title || `role-${index + 1}`)}`,
+        experience.map((entry) => entry.id)
+      );
+      experience.push({
+        id,
+        employer: role.employer,
+        job_title: role.job_title,
+        location: role.location,
+        dates: role.dates,
+        additional_role: role.additional_role,
+        bullets: role.bullets
+      });
+    }
+
+    return {
+      basics: {
+        name: data.name,
+        address: data.address,
+        email: data.email,
+        phone: data.phone,
+        linkedin: data.linkedin,
+        github: data.github,
+        website: data.website
+      },
+      active_profile_id: 'default-profile',
+      profiles: [
+        {
+          id: 'default-profile',
+          label: 'Default Profile',
+          summary: data.summary,
+          skill_ids: skillIds,
+          experience_ids: experience.map((role) => role.id),
+          experience_overrides: {}
+        }
+      ],
+      skills,
+      experience,
+      education: data.education,
+      languages: data.languages ?? []
+    };
+  }
+
   function hydrateDrafts() {
     languagesDraft = resume.languages.join('\n');
-    skillDrafts = Object.fromEntries(
-      Object.entries(resume.skills).map(([key, values]) => [key, values.join('\n')])
-    );
+    if (resume.profiles.length === 0) {
+      resume.profiles = [blankProfile()];
+    }
+    if (!resume.profiles.some((profile) => profile.id === resume.active_profile_id)) {
+      resume.active_profile_id = resume.profiles[0].id;
+    }
+    selectedProfileIndex = Math.max(0, Math.min(selectedProfileIndex, resume.profiles.length - 1));
     if (resume.experience.length === 0) {
-      resume.experience = [blankExperience()];
-      selectedExperience = 0;
+      selectedExperienceIndex = 0;
     } else {
-      selectedExperience = Math.min(selectedExperience, resume.experience.length - 1);
+      selectedExperienceIndex = Math.max(
+        0,
+        Math.min(selectedExperienceIndex, resume.experience.length - 1)
+      );
     }
   }
 
-  function selectedRole(): ExperienceEntry | null {
-    return resume.experience[selectedExperience] ?? null;
+  function selectedProfile(): ResumeProfile | null {
+    return resume.profiles[selectedProfileIndex] ?? null;
+  }
+
+  function selectedExperience(): ExperienceEntry | null {
+    return resume.experience[selectedExperienceIndex] ?? null;
+  }
+
+  function selectedExperienceOverride(): ExperienceOverride | null {
+    const profile = selectedProfile();
+    const role = selectedExperience();
+    if (!profile || !role) return null;
+    return profile.experience_overrides?.[role.id] ?? null;
   }
 
   async function bootstrap() {
@@ -94,7 +242,8 @@
     notice = '';
     try {
       const raw = await invoke<string>('load_resume', { repoRoot });
-      resume = JSON.parse(raw) as ResumeData;
+      const parsed = JSON.parse(raw) as ResumeData | LegacyResumeData;
+      resume = isModernResumeData(parsed) ? parsed : upgradeLegacyResumeData(parsed);
       hydrateDrafts();
       await refreshGeneratedFiles();
       notice = 'Loaded resume.json';
@@ -111,9 +260,6 @@
     notice = '';
     try {
       resume.languages = normalizeLines(languagesDraft);
-      for (const [key, value] of Object.entries(skillDrafts)) {
-        resume.skills[key] = normalizeLines(value);
-      }
       const payload = JSON.stringify(resume, null, 2) + '\n';
       await invoke('save_resume', { repoRoot, contents: payload });
       notice = 'Saved resume.json';
@@ -143,43 +289,112 @@
     }
   }
 
-  function updateBullets(value: string) {
-    const role = selectedRole();
-    if (!role) return;
-    role.bullets = normalizeLines(value);
-  }
-
-  function addSkillCategory() {
-    const label = window.prompt('New skill category name');
+  function addProfile() {
+    const label = window.prompt('New profile label');
     if (!label) return;
-    const key = label.trim();
-    if (!key || resume.skills[key]) return;
-    resume.skills[key] = [];
-    skillDrafts[key] = '';
+    const id = uniqueId(slugify(label), resume.profiles.map((profile) => profile.id));
+    resume.profiles = [...resume.profiles, blankProfile(id, label.trim())];
+    selectedProfileIndex = resume.profiles.length - 1;
   }
 
-  function removeSkillCategory(key: string) {
-    const next = { ...resume.skills };
-    delete next[key];
-    resume.skills = next;
-    const nextDrafts = { ...skillDrafts };
-    delete nextDrafts[key];
-    skillDrafts = nextDrafts;
+  function removeSelectedProfile() {
+    if (resume.profiles.length === 1) return;
+    const removed = resume.profiles[selectedProfileIndex];
+    resume.profiles = resume.profiles.filter((_, index) => index !== selectedProfileIndex);
+    if (removed.id === resume.active_profile_id) {
+      resume.active_profile_id = resume.profiles[0].id;
+    }
+    selectedProfileIndex = Math.max(0, selectedProfileIndex - 1);
+  }
+
+  function setActiveProfile(index: number) {
+    const profile = resume.profiles[index];
+    if (!profile) return;
+    resume.active_profile_id = profile.id;
+    selectedProfileIndex = index;
+  }
+
+  function updateSelectedProfileId(value: string) {
+    const profile = selectedProfile();
+    if (!profile) return;
+    const next = uniqueId(
+      slugify(value || profile.label),
+      resume.profiles.filter((item) => item !== profile).map((item) => item.id)
+    );
+    if (resume.active_profile_id === profile.id) {
+      resume.active_profile_id = next;
+    }
+    profile.id = next;
+  }
+
+  function addSkill() {
+    const label = window.prompt('Skill label');
+    if (!label) return;
+    const category = window.prompt('Skill category', 'General')?.trim() || 'General';
+    const id = uniqueId(slugify(`${category}-${label}`), resume.skills.map((skill) => skill.id));
+    resume.skills = [...resume.skills, { id, category, label: label.trim() }];
+  }
+
+  function removeSkill(index: number) {
+    const skill = resume.skills[index];
+    if (!skill) return;
+    resume.skills = resume.skills.filter((_, current) => current !== index);
+    for (const profile of resume.profiles) {
+      profile.skill_ids = profile.skill_ids.filter((id) => id !== skill.id);
+    }
+  }
+
+  function normalizeSkillId(index: number) {
+    const skill = resume.skills[index];
+    if (!skill) return;
+    skill.id = uniqueId(
+      slugify(`${skill.category || 'skill'}-${skill.label || 'item'}`),
+      resume.skills.filter((_, current) => current !== index).map((item) => item.id)
+    );
+  }
+
+  function profileIncludesSkill(skillId: string): boolean {
+    const profile = selectedProfile();
+    return profile ? profile.skill_ids.includes(skillId) : false;
+  }
+
+  function toggleSkillForProfile(skillId: string, checked: boolean) {
+    const profile = selectedProfile();
+    if (!profile) return;
+    profile.skill_ids = checked
+      ? profile.skill_ids.includes(skillId)
+        ? profile.skill_ids
+        : [...profile.skill_ids, skillId]
+      : profile.skill_ids.filter((id) => id !== skillId);
   }
 
   function addExperience() {
-    resume.experience = [...resume.experience, blankExperience()];
-    selectedExperience = resume.experience.length - 1;
+    const id = uniqueId(
+      `experience-${resume.experience.length + 1}`,
+      resume.experience.map((role) => role.id)
+    );
+    resume.experience = [...resume.experience, blankExperience(id)];
+    selectedExperienceIndex = resume.experience.length - 1;
   }
 
   function removeExperience(index: number) {
-    if (resume.experience.length === 1) {
-      resume.experience = [blankExperience()];
-      selectedExperience = 0;
-      return;
-    }
+    const role = resume.experience[index];
+    if (!role) return;
     resume.experience = resume.experience.filter((_, current) => current !== index);
-    selectedExperience = Math.max(0, Math.min(selectedExperience, resume.experience.length - 1));
+    for (const profile of resume.profiles) {
+      profile.experience_ids = profile.experience_ids.filter((id) => id !== role.id);
+      if (profile.experience_overrides) {
+        delete profile.experience_overrides[role.id];
+      }
+    }
+    if (resume.experience.length === 0) {
+      selectedExperienceIndex = 0;
+    } else {
+      selectedExperienceIndex = Math.max(
+        0,
+        Math.min(selectedExperienceIndex, resume.experience.length - 1)
+      );
+    }
   }
 
   function moveExperience(index: number, delta: number) {
@@ -189,7 +404,104 @@
     const [item] = next.splice(index, 1);
     next.splice(target, 0, item);
     resume.experience = next;
-    selectedExperience = target;
+    selectedExperienceIndex = target;
+  }
+
+  function normalizeExperienceId(index: number) {
+    const role = resume.experience[index];
+    if (!role) return;
+    const previousId = role.id;
+    const nextId = uniqueId(
+      slugify(`${role.employer || 'employer'}-${role.job_title || 'role'}`),
+      resume.experience.filter((_, current) => current !== index).map((item) => item.id)
+    );
+    role.id = nextId;
+    for (const profile of resume.profiles) {
+      profile.experience_ids = profile.experience_ids.map((id) => (id === previousId ? nextId : id));
+      if (profile.experience_overrides?.[previousId]) {
+        profile.experience_overrides[nextId] = profile.experience_overrides[previousId];
+        delete profile.experience_overrides[previousId];
+      }
+    }
+  }
+
+  function updateBaseBullets(value: string) {
+    const role = selectedExperience();
+    if (!role) return;
+    role.bullets = normalizeLines(value);
+  }
+
+  function profileIncludesExperience(experienceId: string): boolean {
+    const profile = selectedProfile();
+    return profile ? profile.experience_ids.includes(experienceId) : false;
+  }
+
+  function toggleExperienceForProfile(experienceId: string, checked: boolean) {
+    const profile = selectedProfile();
+    if (!profile) return;
+    profile.experience_ids = checked
+      ? profile.experience_ids.includes(experienceId)
+        ? profile.experience_ids
+        : [...profile.experience_ids, experienceId]
+      : profile.experience_ids.filter((id) => id !== experienceId);
+    if (!checked && profile.experience_overrides) {
+      delete profile.experience_overrides[experienceId];
+    }
+  }
+
+  function ensureExperienceOverride(profile: ResumeProfile, experienceId: string): ExperienceOverride {
+    profile.experience_overrides ??= {};
+    profile.experience_overrides[experienceId] ??= {};
+    return profile.experience_overrides[experienceId];
+  }
+
+  function pruneExperienceOverride(profile: ResumeProfile, experienceId: string) {
+    const override = profile.experience_overrides?.[experienceId];
+    if (!override) return;
+    if (Object.keys(override).length === 0) {
+      if (profile.experience_overrides) {
+        delete profile.experience_overrides[experienceId];
+      }
+    }
+  }
+
+  function setExperienceOverrideField(field: keyof ExperienceOverride, value: string) {
+    const profile = selectedProfile();
+    const role = selectedExperience();
+    if (!profile || !role) return;
+    const trimmed = value.trim();
+    if (!trimmed) {
+      if (profile.experience_overrides?.[role.id]) {
+        delete profile.experience_overrides[role.id][field];
+        pruneExperienceOverride(profile, role.id);
+      }
+      return;
+    }
+    const override = ensureExperienceOverride(profile, role.id);
+    override[field] = trimmed;
+  }
+
+  function setExperienceOverrideBullets(value: string) {
+    const profile = selectedProfile();
+    const role = selectedExperience();
+    if (!profile || !role) return;
+    const bullets = normalizeLines(value);
+    if (bullets.length === 0) {
+      if (profile.experience_overrides?.[role.id]) {
+        delete profile.experience_overrides[role.id].bullets;
+        pruneExperienceOverride(profile, role.id);
+      }
+      return;
+    }
+    const override = ensureExperienceOverride(profile, role.id);
+    override.bullets = bullets;
+  }
+
+  function clearExperienceOverride() {
+    const profile = selectedProfile();
+    const role = selectedExperience();
+    if (!profile || !role || !profile.experience_overrides) return;
+    delete profile.experience_overrides[role.id];
   }
 
   async function openGeneratedFile(file: GeneratedFile) {
@@ -207,7 +519,7 @@
   <title>Resume Editor</title>
   <meta
     name="description"
-    content="Edit resume.json and run the local Docker resume build from a Tauri desktop app."
+    content="Edit resume profiles and run the local Docker resume build from a Tauri desktop app."
   />
 </svelte:head>
 
@@ -216,7 +528,10 @@
     <div class="brand">
       <p class="eyebrow">Local Editor</p>
       <h1>Resume Control Room</h1>
-      <p class="lede">Edit the source JSON, save it, and trigger the Docker build without leaving the app.</p>
+      <p class="lede">
+        Maintain one master resume inventory, then build role-specific profiles by selecting the
+        skills and experience each target needs.
+      </p>
     </div>
 
     <label class="stack">
@@ -263,6 +578,62 @@
 
   <main class="editor">
     <section class="card">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">Profiles</p>
+          <h2>Targeted Resume Variants</h2>
+        </div>
+        <div class="actions compact">
+          <button class="secondary" on:click={addProfile}>Add Profile</button>
+          <button class="ghost" on:click={removeSelectedProfile} disabled={resume.profiles.length === 1}>
+            Delete Profile
+          </button>
+        </div>
+      </div>
+
+      <div class="profile-pills">
+        {#each resume.profiles as profile, index}
+          <button
+            class:selected={index === selectedProfileIndex}
+            class:active={profile.id === resume.active_profile_id}
+            class="profile-pill"
+            on:click={() => (selectedProfileIndex = index)}
+          >
+            <span>{profile.label || 'Untitled Profile'}</span>
+            <small>{profile.id === resume.active_profile_id ? 'Active build profile' : profile.id}</small>
+          </button>
+        {/each}
+      </div>
+
+      {#if selectedProfile()}
+        <div class="grid two">
+          <label class="stack">
+            <span>Profile Label</span>
+            <input bind:value={resume.profiles[selectedProfileIndex].label} />
+          </label>
+          <label class="stack">
+            <span>Profile Id</span>
+            <div class="inline-row">
+              <input
+                value={resume.profiles[selectedProfileIndex].id}
+                on:change={(event) =>
+                  updateSelectedProfileId((event.currentTarget as HTMLInputElement).value)}
+              />
+              <button class="ghost" on:click={() => setActiveProfile(selectedProfileIndex)}>
+                {resume.profiles[selectedProfileIndex].id === resume.active_profile_id ? 'Active' : 'Set Active'}
+              </button>
+            </div>
+          </label>
+          <label class="stack full">
+            <span>Profile Summary</span>
+            <textarea bind:value={resume.profiles[selectedProfileIndex].summary} rows="6"></textarea>
+            <p class="hint">This summary is profile-specific and becomes the rendered resume summary.</p>
+          </label>
+        </div>
+      {/if}
+    </section>
+
+    <section class="card">
       <div class="section-head">
         <p class="eyebrow">Identity</p>
         <h2>Header</h2>
@@ -270,63 +641,77 @@
       <div class="grid two">
         <label class="stack">
           <span>Name</span>
-          <input bind:value={resume.name} />
+          <input bind:value={resume.basics.name} />
         </label>
         <label class="stack">
           <span>Email</span>
-          <input bind:value={resume.email} />
+          <input bind:value={resume.basics.email} />
         </label>
         <label class="stack full">
           <span>Address</span>
-          <input bind:value={resume.address} />
+          <input bind:value={resume.basics.address} />
         </label>
         <label class="stack">
           <span>Phone</span>
-          <input bind:value={resume.phone} />
+          <input bind:value={resume.basics.phone} />
         </label>
         <label class="stack">
           <span>Website</span>
-          <input bind:value={resume.website} />
+          <input bind:value={resume.basics.website} />
         </label>
         <label class="stack">
           <span>LinkedIn</span>
-          <input bind:value={resume.linkedin} />
+          <input bind:value={resume.basics.linkedin} />
         </label>
         <label class="stack">
           <span>GitHub</span>
-          <input bind:value={resume.github} />
+          <input bind:value={resume.basics.github} />
         </label>
       </div>
-    </section>
-
-    <section class="card">
-      <div class="section-head">
-        <p class="eyebrow">Summary</p>
-        <h2>Professional Snapshot</h2>
-      </div>
-      <label class="stack">
-        <span>Summary</span>
-        <textarea bind:value={resume.summary} rows="5"></textarea>
-      </label>
     </section>
 
     <section class="card">
       <div class="section-head split">
         <div>
-          <p class="eyebrow">Skills</p>
-          <h2>Categories</h2>
+          <p class="eyebrow">Skills Inventory</p>
+          <h2>Master Skills</h2>
         </div>
-        <button class="secondary" on:click={addSkillCategory}>Add Category</button>
+        <button class="secondary" on:click={addSkill}>Add Skill</button>
       </div>
+
       <div class="skill-list">
-        {#each Object.keys(skillDrafts) as key}
+        {#each resume.skills as skill, index}
           <div class="skill-card">
             <div class="skill-card-head">
-              <h3>{key}</h3>
-              <button class="ghost" on:click={() => removeSkillCategory(key)}>Remove</button>
+              <label class="toggle">
+                <input
+                  type="checkbox"
+                  checked={profileIncludesSkill(skill.id)}
+                  on:change={(event) =>
+                    toggleSkillForProfile(
+                      skill.id,
+                      (event.currentTarget as HTMLInputElement).checked
+                    )}
+                />
+                <span>Include in selected profile</span>
+              </label>
+              <button class="ghost" on:click={() => removeSkill(index)}>Remove</button>
             </div>
-            <textarea bind:value={skillDrafts[key]} rows="4"></textarea>
-            <p class="hint">One value per line.</p>
+            <label class="stack">
+              <span>Label</span>
+              <input bind:value={resume.skills[index].label} />
+            </label>
+            <label class="stack">
+              <span>Category</span>
+              <input bind:value={resume.skills[index].category} />
+            </label>
+            <label class="stack">
+              <span>Id</span>
+              <div class="inline-row">
+                <input bind:value={resume.skills[index].id} />
+                <button class="ghost" on:click={() => normalizeSkillId(index)}>Normalize</button>
+              </div>
+            </label>
           </div>
         {/each}
       </div>
@@ -335,7 +720,7 @@
     <section class="card experience-card">
       <div class="section-head split">
         <div>
-          <p class="eyebrow">Experience</p>
+          <p class="eyebrow">Experience Inventory</p>
           <h2>Role History</h2>
         </div>
         <button class="secondary" on:click={addExperience}>Add Role</button>
@@ -345,9 +730,10 @@
         <div class="experience-list">
           {#each resume.experience as role, index}
             <button
-              class:selected={index === selectedExperience}
+              class:selected={index === selectedExperienceIndex}
+              class:included={profileIncludesExperience(role.id)}
               class="experience-pill"
-              on:click={() => (selectedExperience = index)}
+              on:click={() => (selectedExperienceIndex = index)}
             >
               <span>{role.employer || 'New Employer'}</span>
               <small>{role.job_title || 'Untitled role'}</small>
@@ -355,45 +741,132 @@
           {/each}
         </div>
 
-        {#if selectedRole()}
+        {#if selectedExperience()}
           <div class="experience-form">
             <div class="toolbar">
-              <button class="ghost" on:click={() => moveExperience(selectedExperience, -1)}>Move Up</button>
-              <button class="ghost" on:click={() => moveExperience(selectedExperience, 1)}>Move Down</button>
-              <button class="danger" on:click={() => removeExperience(selectedExperience)}>Delete</button>
+              <button class="ghost" on:click={() => moveExperience(selectedExperienceIndex, -1)}>
+                Move Up
+              </button>
+              <button class="ghost" on:click={() => moveExperience(selectedExperienceIndex, 1)}>
+                Move Down
+              </button>
+              <button class="danger" on:click={() => removeExperience(selectedExperienceIndex)}>
+                Delete
+              </button>
             </div>
 
             <div class="grid two">
               <label class="stack">
                 <span>Employer</span>
-                <input bind:value={resume.experience[selectedExperience].employer} />
+                <input bind:value={resume.experience[selectedExperienceIndex].employer} />
               </label>
               <label class="stack">
                 <span>Job Title</span>
-                <input bind:value={resume.experience[selectedExperience].job_title} />
+                <input bind:value={resume.experience[selectedExperienceIndex].job_title} />
               </label>
               <label class="stack">
                 <span>Location</span>
-                <input bind:value={resume.experience[selectedExperience].location} />
+                <input bind:value={resume.experience[selectedExperienceIndex].location} />
               </label>
               <label class="stack">
                 <span>Dates</span>
-                <input bind:value={resume.experience[selectedExperience].dates} />
+                <input bind:value={resume.experience[selectedExperienceIndex].dates} />
               </label>
-              <label class="stack full">
+              <label class="stack">
                 <span>Additional Role</span>
-                <input bind:value={resume.experience[selectedExperience].additional_role} />
+                <input bind:value={resume.experience[selectedExperienceIndex].additional_role} />
+              </label>
+              <label class="stack">
+                <span>Experience Id</span>
+                <div class="inline-row">
+                  <input bind:value={resume.experience[selectedExperienceIndex].id} />
+                  <button class="ghost" on:click={() => normalizeExperienceId(selectedExperienceIndex)}>
+                    Normalize
+                  </button>
+                </div>
               </label>
               <label class="stack full">
-                <span>Bullets</span>
+                <span>Base Bullets</span>
                 <textarea
-                  rows="8"
-                  value={resume.experience[selectedExperience].bullets.join('\n')}
-                  on:input={(event) => updateBullets((event.currentTarget as HTMLTextAreaElement).value)}
+                  rows="7"
+                  value={resume.experience[selectedExperienceIndex].bullets.join('\n')}
+                  on:input={(event) =>
+                    updateBaseBullets((event.currentTarget as HTMLTextAreaElement).value)}
                 ></textarea>
-                <p class="hint">One bullet per line.</p>
+                <p class="hint">These bullets belong to the master experience inventory.</p>
               </label>
             </div>
+
+            {#if selectedProfile()}
+              <div class="profile-override">
+                <div class="section-head split compact-head">
+                  <div>
+                    <p class="eyebrow">Profile Override</p>
+                    <h3>{selectedProfile()?.label}</h3>
+                  </div>
+                  <label class="toggle">
+                    <input
+                      type="checkbox"
+                      checked={profileIncludesExperience(resume.experience[selectedExperienceIndex].id)}
+                      on:change={(event) =>
+                        toggleExperienceForProfile(
+                          resume.experience[selectedExperienceIndex].id,
+                          (event.currentTarget as HTMLInputElement).checked
+                        )}
+                    />
+                    <span>Include in selected profile</span>
+                  </label>
+                </div>
+
+                {#if profileIncludesExperience(resume.experience[selectedExperienceIndex].id)}
+                  <div class="grid two">
+                    <label class="stack">
+                      <span>Profile Job Title Override</span>
+                      <input
+                        value={selectedExperienceOverride()?.job_title ?? ''}
+                        on:input={(event) =>
+                          setExperienceOverrideField(
+                            'job_title',
+                            (event.currentTarget as HTMLInputElement).value
+                          )}
+                      />
+                    </label>
+                    <label class="stack">
+                      <span>Profile Additional Role Override</span>
+                      <input
+                        value={selectedExperienceOverride()?.additional_role ?? ''}
+                        on:input={(event) =>
+                          setExperienceOverrideField(
+                            'additional_role',
+                            (event.currentTarget as HTMLInputElement).value
+                          )}
+                      />
+                    </label>
+                    <label class="stack full">
+                      <span>Profile Bullets Override</span>
+                      <textarea
+                        rows="7"
+                        value={selectedExperienceOverride()?.bullets?.join('\n') ?? ''}
+                        on:input={(event) =>
+                          setExperienceOverrideBullets(
+                            (event.currentTarget as HTMLTextAreaElement).value
+                          )}
+                      ></textarea>
+                      <p class="hint">
+                        Leave blank to use the base bullets. Use this area to target one role
+                        without rewriting the master inventory.
+                      </p>
+                    </label>
+                  </div>
+                  <button class="ghost" on:click={clearExperienceOverride}>Clear Override</button>
+                {:else}
+                  <p class="hint">
+                    This role is currently excluded from the selected profile and will not render in
+                    that resume variant.
+                  </p>
+                {/if}
+              </div>
+            {/if}
           </div>
         {/if}
       </div>
@@ -442,7 +915,7 @@
   :global(body) {
     margin: 0;
     font-family:
-      "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+      'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
     background:
       radial-gradient(circle at top left, rgba(226, 200, 168, 0.35), transparent 30%),
       linear-gradient(180deg, #f5efe6 0%, #ece2d2 100%);
@@ -479,14 +952,15 @@
 
   .brand h1,
   .section-head h2,
-  .build-panel h2 {
+  .build-panel h2,
+  .compact-head h3 {
     margin: 0;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
   }
 
   .eyebrow {
     margin: 0 0 0.35rem;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.16em;
     font-size: 0.72rem;
@@ -506,8 +980,10 @@
 
   .stack span,
   .hint,
-  .experience-pill small {
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+  .experience-pill small,
+  .profile-pill small,
+  .toggle span {
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
   }
 
   .stack span {
@@ -536,14 +1012,23 @@
 
   .actions,
   .toolbar,
-  .section-head.split {
+  .section-head.split,
+  .inline-row {
     display: flex;
     gap: 0.65rem;
     align-items: center;
   }
 
+  .inline-row {
+    width: 100%;
+  }
+
   .section-head.split {
     justify-content: space-between;
+  }
+
+  .compact {
+    gap: 0.5rem;
   }
 
   button {
@@ -555,7 +1040,7 @@
       transform 140ms ease,
       opacity 140ms ease,
       background 140ms ease;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
     font-weight: 600;
   }
 
@@ -593,7 +1078,7 @@
     margin: 0;
     padding: 0.7rem 0.85rem;
     border-radius: 12px;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
   }
 
   .notice {
@@ -624,16 +1109,23 @@
     min-height: 260px;
     white-space: pre-wrap;
     word-break: break-word;
-    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
     font-size: 0.84rem;
   }
 
-  .generated-files {
+  .generated-files,
+  .profile-pills {
     display: grid;
     gap: 0.6rem;
   }
 
-  .file-link {
+  .profile-pills {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-bottom: 1rem;
+  }
+
+  .file-link,
+  .profile-pill {
     display: grid;
     gap: 0.18rem;
     text-align: left;
@@ -643,15 +1135,30 @@
     padding: 0.8rem 0.95rem;
   }
 
-  .file-link strong,
-  .file-link small,
-  .empty-state {
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+  .profile-pill.active {
+    box-shadow: inset 0 0 0 2px rgba(187, 106, 47, 0.42);
   }
 
-  .file-link small {
+  .profile-pill.selected {
+    background: linear-gradient(135deg, #3e5e63 0%, #1b2f37 100%);
+    color: white;
+  }
+
+  .file-link strong,
+  .file-link small,
+  .empty-state,
+  .profile-pill span {
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
+  }
+
+  .file-link small,
+  .profile-pill small {
     color: #6b5643;
     overflow-wrap: anywhere;
+  }
+
+  .profile-pill.selected small {
+    color: rgba(255, 255, 255, 0.76);
   }
 
   .empty-state {
@@ -686,10 +1193,11 @@
   .skill-list {
     display: grid;
     gap: 0.85rem;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 
-  .skill-card {
+  .skill-card,
+  .profile-override {
     padding: 1rem;
     border-radius: 22px;
     background: rgba(248, 240, 229, 0.88);
@@ -700,12 +1208,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.6rem;
-  }
-
-  .skill-card-head h3 {
-    margin: 0;
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
   }
 
   .experience-layout {
@@ -731,20 +1235,48 @@
     border: 1px solid transparent;
   }
 
+  .experience-pill.included {
+    box-shadow: inset 0 0 0 2px rgba(187, 106, 47, 0.24);
+  }
+
   .experience-pill.selected {
     background: linear-gradient(135deg, #3e5e63 0%, #1b2f37 100%);
     color: white;
     border-color: rgba(255, 255, 255, 0.28);
   }
 
+  .experience-pill.selected small {
+    color: rgba(255, 255, 255, 0.76);
+  }
+
   .experience-pill span {
-    font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
     font-weight: 700;
   }
 
   .experience-form {
     display: grid;
     gap: 1rem;
+  }
+
+  .profile-override {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .compact-head {
+    align-items: center;
+  }
+
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .toggle input {
+    width: auto;
+    margin: 0;
   }
 
   .hint {

@@ -2,13 +2,16 @@
 
 This repository stores the resume source as structured data and generates both an ATS-friendly PDF and a styled PDF from that single source.
 
+The source is now profile-aware: a shared inventory of skills and experience lives in `resume.json`, and one active profile selects which content is rendered for a specific target role.
+
 ## Files
 
-- `resume.json`: single source of truth for resume content
+- `resume.json`: single source of truth for shared resume content plus profile-specific selections
 - `resume-ats.css`: styling for the ATS-friendly PDF
 - `resume-stylish.css`: styling for the styled PDF
 - `Dockerfile`: build image with `pandoc` and `wkhtmltopdf`
 - `compose.yaml`: local build entrypoint
+- `scripts/resume_model.py`: resolves the active profile into the flat structure consumed by the renderers
 - `scripts/render_resume.py`: renders the structured source into ATS and styled Markdown files
 - `scripts/build_ats_docx.py`: generates a tighter ATS `.docx` directly from the structured source
 - `scripts/ats_smoke_test.py`: extracts text from `.docx` or `.pdf` and heuristically parses experience blocks
@@ -38,6 +41,20 @@ build/Julien_Pireaud_Resume_ATS.docx
 build/Julien_Pireaud_Resume_ATS.pdf
 build/Julien_Pireaud_Resume.pdf
 ```
+
+The active rendered profile is controlled by `active_profile_id` in `resume.json`.
+
+## Profile Model
+
+`resume.json` is split into:
+
+- `basics`: shared identity and contact information
+- `skills`: master skill inventory with ids and categories
+- `experience`: master experience inventory with ids
+- `profiles`: per-target resume variants that choose summary, skills, and experiences
+- `active_profile_id`: the profile the build scripts render
+
+This keeps one canonical inventory while letting you maintain separate role-focused resumes such as iOS/product and applied-science/data-systems variants.
 
 ## GitHub Actions
 
@@ -110,6 +127,8 @@ npm run tauri dev
 The editor can:
 
 - load and save the parent `resume.json`
-- edit the main resume sections with a graphical form
+- edit the shared skill and experience inventory
+- build role-specific profiles by activating or excluding skills and experiences
+- add per-profile summary and experience bullet overrides
 - trigger the existing Docker resume build locally
 - show the build output in the app

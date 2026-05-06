@@ -2,7 +2,7 @@
 
 set -eu
 
-TITLE="$(python3 -c 'import json; print(json.load(open("resume.json"))["name"])')"
+TITLE="$(python3 -c 'from scripts.resume_model import load_resume; print(load_resume()["name"])')"
 
 python3 scripts/render_resume.py
 python3 scripts/build_ats_docx.py

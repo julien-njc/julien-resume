@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-import json
 from pathlib import Path
+
+from resume_model import load_resume
 
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "resume.json"
 BUILD_DIR = ROOT / "build"
 
 
@@ -94,7 +94,7 @@ def render_stylish(data: dict) -> str:
 
 
 def main():
-    data = json.loads(SOURCE.read_text())
+    data = load_resume()
     BUILD_DIR.mkdir(exist_ok=True)
     (BUILD_DIR / "Julien_Pireaud_Resume_ATS.md").write_text(render_ats(data))
     (BUILD_DIR / "Julien_Pireaud_Resume_Styled.md").write_text(render_stylish(data))
