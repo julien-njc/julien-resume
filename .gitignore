@@ -1,4 +1,19 @@
+# ── Personal resume data (private — see sample/resume.json for an example) ──
+/resume.json
+/applications.json
+/fr/
+/de/
+/es/
+
+# ── Generated outputs ────────────────────────────────────────────────────────
 build/
+*.pdf
+*.docx
+
+# ── Docker build context (auto-generated before each build) ─────────────────
+.resume-builder/
+
+# ── Editor ───────────────────────────────────────────────────────────────────
 scripts/__pycache__/
 editor/.svelte-kit/
 editor/build/
@@ -6,3 +21,6 @@ editor/dist/
 editor/node_modules/
 editor/src-tauri/gen/
 editor/src-tauri/target/
+
+# ── Misc ─────────────────────────────────────────────────────────────────────
+pnnl.md

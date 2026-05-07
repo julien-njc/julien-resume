@@ -30,6 +30,17 @@ Active rendered profile controlled by `active_profile_id` in `resume.json`.
 cd editor && npm install && npm run tauri dev
 ```
 
+To keep Rust crates and NPM packages in sync when Tauri releases a new version:
+
+```bash
+# 1. Update npm packages
+cd editor && npm install @tauri-apps/api@latest @tauri-apps/cli@latest @tauri-apps/plugin-dialog@latest
+
+# 2. Pin Cargo.toml versions to match (tauri and tauri-plugin-dialog; tauri-build follows its own track)
+#    Then update the lockfile:
+cd editor/src-tauri && cargo update tauri tauri-build tauri-plugin-dialog
+```
+
 ### CI
 
 `.github/workflows/release-resume.yml` — triggers on pushes to `main` that touch resume or build files, runs Docker build, publishes GitHub release with all generated files.
@@ -291,11 +302,44 @@ The Keep button is the only trigger for snapshot creation. Nothing is saved auto
 Currently in `julienpireaud/`. Will become a `website/` or `site/` subdirectory here.
 
 - Static SvelteKit, `@sveltejs/adapter-static`, Firebase Hosting
-- All profiles visible; visitor switches profile (resets on visit — no persistence)
-- EN + FR; English is source of truth
-- Routes: `/{lang}/resume`, `/{lang}/contact`
+- All content loaded **at build time** from `resume.json` via `+page.server.ts` — no runtime fetching, fully offline-generated HTML
+- EN + FR; English is source of truth; `active_profile_id` determines the default profile shown
 - Contact form: Web3Forms (`PUBLIC_WEB3FORMS_ACCESS_KEY`)
 - Live deploy: CI on `main` only; local script (`npm run deploy:firebase`) is preview-only
+- The hardcoded `src/lib/content/resume.ts` is replaced entirely by importing `resume.json` at build time
+
+### Route structure
+
+```
+/[lang]/resume                             → server-side redirects to default profile URL
+/[lang]/resume/profile/[profile_id]        → specific profile (shareable, canonical URL)
+/[lang]/contact                            → contact form (unchanged)
+```
+
+Profile switcher sits at the **bottom of the page** as plain `<a href>` links to the profile URLs — no query params, no JS required for sharing.
+
+`[lang]` ∈ `{en, fr}` enforced by `src/params/lang.ts`. `[profile_id]` validated against profiles in `resume.json`.
+
+### Build-time prerendering of profile routes
+
+```ts
+// src/routes/[lang]/resume/profile/[profile_id]/+page.server.ts
+import resumeData from '$lib/resume.json';
+
+export const entries = () =>
+  resumeData.profiles.map(p => ({ profile_id: p.id }));
+```
+
+This generates all `[lang] × [profile_id]` combinations at build time.
+
+### Publish flow (from Tauri editor)
+
+The editor has a **Publish** button that:
+1. Reads the local `resume.json`
+2. Calls the GitHub Contents API (`PUT /repos/{owner}/{repo}/contents/{path}`) to update the file and create a commit
+3. GitHub Actions on the website repo triggers a build and deploys to Firebase Hosting
+
+Auth: **Personal Access Token** (PAT) with `repo` scope, stored in the OS keychain. Configured once in editor settings: PAT, repo (`owner/repo`), branch (default: `main`), file path (default: `resume.json`).
 
 ---
 

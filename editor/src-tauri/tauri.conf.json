@@ -26,6 +26,15 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all"
+    "targets": "all",
+    "resources": {
+      "../../Dockerfile": "docker/Dockerfile",
+      "../../scripts/build-resume.sh": "docker/scripts/build-resume.sh",
+      "../../scripts/resume_model.py": "docker/scripts/resume_model.py",
+      "../../scripts/render_resume.py": "docker/scripts/render_resume.py",
+      "../../scripts/build_ats_docx.py": "docker/scripts/build_ats_docx.py",
+      "../../resume-ats.css": "docker/resume-ats.css",
+      "../../resume-stylish.css": "docker/resume-stylish.css"
+    }
   }
 }
