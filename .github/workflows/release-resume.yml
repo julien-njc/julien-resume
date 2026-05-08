@@ -1,18 +1,15 @@
-name: Build Resume PDFs
+name: Build Tauri Editor
 
 on:
   push:
     branches:
       - main
     paths:
-      - "resume.json"
+      - "editor/**"
+      - "scripts/**"
+      - "Dockerfile"
       - "resume-ats.css"
       - "resume-stylish.css"
-      - "Dockerfile"
-      - "compose.yaml"
-      - "scripts/build_ats_docx.py"
-      - "scripts/render_resume.py"
-      - "scripts/build-resume.sh"
       - ".github/workflows/release-resume.yml"
   workflow_dispatch:
 
@@ -20,44 +17,68 @@ permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            args: --target universal-apple-darwin
+          - platform: ubuntu-22.04
+            args: ""
+          - platform: windows-latest
+            args: ""
+
+    runs-on: ${{ matrix.platform }}
 
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Build PDF
-        run: |
-          docker compose build resume-builder
-          docker compose run --rm resume-builder
-
-      - name: Upload workflow artifact
-        uses: actions/upload-artifact@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          name: resume_outputs
-          path: |
-            build/resume_ats.docx
-            build/resume_ats.pdf
-            build/resume_styled.pdf
+          node-version: lts/*
 
-      - name: Create or update release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG_NAME: resume-${{ github.sha }}
-          RELEASE_TITLE: Resume build ${{ github.sha }}
+      - name: Set up Rust (stable)
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Add macOS cross-compile targets (universal binary)
+        if: matrix.platform == 'macos-latest'
+        run: rustup target add aarch64-apple-darwin x86_64-apple-darwin
+
+      - name: Install Linux system dependencies
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
-          if gh release view "$TAG_NAME" >/dev/null 2>&1; then
-            gh release upload "$TAG_NAME" \
-              "build/resume_ats.docx" \
-              "build/resume_ats.pdf" \
-              "build/resume_styled.pdf" \
-              --clobber
-          else
-            gh release create "$TAG_NAME" \
-              "build/resume_ats.docx" \
-              "build/resume_ats.pdf" \
-              "build/resume_styled.pdf" \
-              --title "$RELEASE_TITLE" \
-              --notes "Automated ATS DOCX, ATS PDF, and styled PDF builds for commit $GITHUB_SHA."
-          fi
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: Install frontend dependencies
+        working-directory: editor
+        run: npm install
+
+      - name: Build and publish release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: editor
+          tagName: editor-v__VERSION__
+          releaseName: Resume Editor v__VERSION__
+          releaseBody: |
+            ## Resume Editor v__VERSION__
+
+            Desktop app for editing `resume.json`, managing job applications, and triggering Docker-based PDF builds.
+
+            | Platform | Installer |
+            |---|---|
+            | macOS (Apple Silicon + Intel) | `.dmg` |
+            | Linux | `.AppImage` · `.deb` |
+            | Windows | `.exe` (NSIS) · `.msi` |
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
