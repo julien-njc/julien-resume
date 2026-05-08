@@ -22,5 +22,13 @@ editor/node_modules/
 editor/src-tauri/gen/
 editor/src-tauri/target/
 
+# ── sample/ — only resume.json is intentional; ignore all build artefacts ────
+sample/build/
+sample/scripts/
+sample/.resume-builder/
+sample/*.css
+sample/*.pdf
+sample/*.docx
+
 # ── Misc ─────────────────────────────────────────────────────────────────────
 pnnl.md

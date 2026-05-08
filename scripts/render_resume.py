@@ -88,8 +88,8 @@ def render_stylish(data: dict) -> str:
 def main():
     data = load_resume()
     BUILD_DIR.mkdir(exist_ok=True)
-    (BUILD_DIR / "Julien_Pireaud_Resume_ATS.md").write_text(render_ats(data))
-    (BUILD_DIR / "Julien_Pireaud_Resume_Styled.md").write_text(render_stylish(data))
+    (BUILD_DIR / "resume_ats.md").write_text(render_ats(data))
+    (BUILD_DIR / "resume_styled.md").write_text(render_stylish(data))
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ from resume_model import load_resume
 
 
 ROOT = Path(__file__).resolve().parent.parent
-OUTPUT = ROOT / "build" / "Julien_Pireaud_Resume_ATS.docx"
+OUTPUT = ROOT / "build" / "resume_ats.docx"
 
 
 def set_spacing(paragraph, before=0, after=0, line=1.0):

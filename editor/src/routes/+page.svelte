@@ -948,7 +948,7 @@
           {/each}
         </div>
 
-        {#if selectedProfile()}
+        {#if resume.profiles[selectedProfileIndex]}
           <div class="grid two">
             <label class="stack">
               <span>Label</span>
@@ -1033,7 +1033,7 @@
             {/each}
           </div>
 
-          {#if selectedExperience()}
+          {#if resume.experience[selectedExperienceIndex]}
             <div class="experience-form">
               <div class="toolbar">
                 <button class="ghost" on:click={() => moveExperience(selectedExperienceIndex, -1)}>↑ Up</button>
@@ -1065,12 +1065,12 @@
                 </label>
               </div>
 
-              {#if selectedProfile()}
+              {#if resume.profiles[selectedProfileIndex]}
                 <div class="profile-override">
                   <div class="section-head split compact-head">
                     <div>
                       <p class="eyebrow">Profile Override</p>
-                      <h3>{selectedProfile()?.label}</h3>
+                      <h3>{resume.profiles[selectedProfileIndex].label}</h3>
                     </div>
                     <label class="toggle">
                       <input
@@ -1147,7 +1147,7 @@
             {/each}
           </div>
 
-          {#if selectedEducation()}
+          {#if resume.education[selectedEducationIndex]}
             <div class="grid two">
               <div class="skill-card-head full">
                 <label class="toggle">

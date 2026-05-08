@@ -35,11 +35,11 @@ jobs:
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Julien_Pireaud_Resume_pdfs
+          name: resume_outputs
           path: |
-            build/Julien_Pireaud_Resume_ATS.docx
-            build/Julien_Pireaud_Resume_ATS.pdf
-            build/Julien_Pireaud_Resume.pdf
+            build/resume_ats.docx
+            build/resume_ats.pdf
+            build/resume_styled.pdf
 
       - name: Create or update release
         env:
@@ -49,15 +49,15 @@ jobs:
         run: |
           if gh release view "$TAG_NAME" >/dev/null 2>&1; then
             gh release upload "$TAG_NAME" \
-              "build/Julien_Pireaud_Resume_ATS.docx" \
-              "build/Julien_Pireaud_Resume_ATS.pdf" \
-              "build/Julien_Pireaud_Resume.pdf" \
+              "build/resume_ats.docx" \
+              "build/resume_ats.pdf" \
+              "build/resume_styled.pdf" \
               --clobber
           else
             gh release create "$TAG_NAME" \
-              "build/Julien_Pireaud_Resume_ATS.docx" \
-              "build/Julien_Pireaud_Resume_ATS.pdf" \
-              "build/Julien_Pireaud_Resume.pdf" \
+              "build/resume_ats.docx" \
+              "build/resume_ats.pdf" \
+              "build/resume_styled.pdf" \
               --title "$RELEASE_TITLE" \
               --notes "Automated ATS DOCX, ATS PDF, and styled PDF builds for commit $GITHUB_SHA."
           fi

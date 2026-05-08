@@ -131,11 +131,11 @@ struct GeneratedFile {
 fn generated_file_candidates(root: &Path) -> Vec<(String, PathBuf)> {
     let build = root.join("build");
     vec![
-        ("ATS DOCX".into(), build.join("Julien_Pireaud_Resume_ATS.docx")),
-        ("ATS PDF".into(), build.join("Julien_Pireaud_Resume_ATS.pdf")),
-        ("Styled PDF".into(), build.join("Julien_Pireaud_Resume.pdf")),
-        ("ATS Markdown".into(), build.join("Julien_Pireaud_Resume_ATS.md")),
-        ("Styled Markdown".into(), build.join("Julien_Pireaud_Resume_Styled.md")),
+        ("ATS DOCX".into(), build.join("resume_ats.docx")),
+        ("ATS PDF".into(), build.join("resume_ats.pdf")),
+        ("Styled PDF".into(), build.join("resume_styled.pdf")),
+        ("ATS Markdown".into(), build.join("resume_ats.md")),
+        ("Styled Markdown".into(), build.join("resume_styled.md")),
     ]
 }
 

@@ -11,19 +11,33 @@
   "writing_style": {
     "context": "I write in a warm, direct tone that balances clinical precision with genuine human warmth. My bullet points always start with a strong action verb and include a quantified outcome where possible. I avoid acronyms unless they are universally understood in the field and never use passive voice. I frame accomplishments in terms of patient or guest impact rather than internal processes."
   },
-  "active_profile_id": "traveling-nurse",
+  "active_profile_id": "culinary-apprentice",
   "profiles": [
     {
       "id": "traveling-nurse",
       "label": "Traveling Nurse — Phlebotomy & Immunizations",
       "summary": "Bilingual Registered Nurse with 20 years of experience across hospital systems in France and the United States, now specializing as a traveling phlebotomist and immunization specialist. Comfortable operating independently in mobile clinic settings, corporate wellness days, and rural outreach programs. Committed to making preventive care accessible and stress-free for every patient.",
-      "chips": ["Phlebotomy", "Immunizations", "Mobile Clinics", "IV Access", "Patient Education", "Bilingual FR/EN"]
+      "chips": [
+        "Phlebotomy",
+        "Immunizations",
+        "Mobile Clinics",
+        "IV Access",
+        "Patient Education",
+        "Bilingual FR/EN"
+      ]
     },
     {
       "id": "culinary-apprentice",
       "label": "Culinary Apprentice — Michelin-Star Kitchen",
       "summary": "Self-taught and formally trained cook with nearly two decades of event catering experience in Paris and an entrepreneurial track record in the US meal-prep market. Seeking a structured apprenticeship in a Michelin-starred kitchen to formalize classical French technique, develop professional brigade discipline, and ultimately earn a place as a line cook in fine dining. Brings unusual strengths in precision, composure under pressure, and rigorous food-safety practice — all honed in a healthcare career.",
-      "chips": ["French Classical Cuisine", "Event Catering", "Mise en Place", "HACCP / Food Safety", "Meal Prep Business", "Brigade Workflow"]
+      "chips": [
+        "French Classical Cuisine",
+        "Event Catering",
+        "Mise en Place",
+        "HACCP / Food Safety",
+        "Meal Prep Business",
+        "Brigade Workflow"
+      ]
     }
   ],
   "summary": "Bilingual registered nurse and passionate cook with two decades of cross-continental experience, bringing clinical precision and creative adaptability to every setting.",
@@ -35,7 +49,9 @@
       "location": "Paris, France",
       "dates": "Oct 2004 – Aug 2012",
       "additional_role": "Union Representative, 2009–2012",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "bullets": [
         "Provided bedside nursing care for a 32-bed general medicine unit seeing 1,400+ patient admissions per year",
         "Performed daily phlebotomy rounds covering 28–35 patients, achieving a first-stick success rate above 97%",
@@ -53,7 +69,9 @@
       "location": "Paris, France",
       "dates": "Apr 2006 – Jul 2012",
       "additional_role": "",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "bullets": [
         "Planned and executed full menus for 30 to 180-guest private dinners, corporate receptions, and outdoor garden parties",
         "Developed rotating seasonal menus in close collaboration with a certified sommelier to pair courses with AOC wines",
@@ -71,7 +89,9 @@
       "location": "New York, NY",
       "dates": "Sep 2012 – Mar 2016",
       "additional_role": "Charge Nurse (rotating), 2014–2016",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "bullets": [
         "Triaged and managed care for up to 220 daily patient visits in a Level I Trauma Center emergency department",
         "Initiated and maintained peripheral IV lines, central line monitoring, and arterial blood gas draws under physician supervision",
@@ -89,7 +109,9 @@
       "location": "New York, NY → Seattle, WA",
       "dates": "Feb 2014 – Present",
       "additional_role": "",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "bullets": [
         "Founded a meal-prep subscription service delivering 200+ weekly portions of chef-prepared, nutritionally balanced meals to New York families",
         "Designed rotating 4-week menus rooted in French bistro technique — ratatouille confit, poulet rôti, bouillabaisse-style stews — adapted for batch production",
@@ -107,7 +129,9 @@
       "location": "Pullman, WA",
       "dates": "Apr 2016 – Nov 2020",
       "additional_role": "",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "bullets": [
         "Delivered intensive critical care in a 14-bed mixed medical-surgical ICU serving a rural community of 35,000",
         "Managed complex patient caseloads including post-operative cardiac, respiratory failure, and multi-organ dysfunction cases",
@@ -125,7 +149,9 @@
       "location": "Greater Seattle Area, WA",
       "dates": "Dec 2020 – Present",
       "additional_role": "",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "bullets": [
         "Deploy to 3–5 clinical sites per week: corporate wellness fairs, assisted-living facilities, rural health clinics, and school vaccination days",
         "Collect an average of 65 blood specimens per shift with a sustained first-stick success rate of 98.3%",
@@ -144,7 +170,9 @@
       "url": "https://bistroathome.example.com",
       "role": "Author & Food Photographer",
       "dates": "2018 – Present",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "bullets": [
         "Write weekly long-form recipes translating classical French brasserie dishes into approachable weeknight meals",
         "Grew readership to 14,000 monthly unique visitors and 9,200 newsletter subscribers without paid promotion",
@@ -158,7 +186,9 @@
       "url": "",
       "role": "Author",
       "dates": "2022",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "bullets": [
         "Compiled a 24-page illustrated pocket reference on phlebotomy strategies for dehydrated, elderly, and anxious patient populations",
         "Distributed to 60+ colleagues in the Northwest Mobile Health network; adopted as onboarding reading by the clinical director"
@@ -171,47 +201,73 @@
       "id": "phlebotomy",
       "category": "Nursing — Clinical",
       "label": "Phlebotomy & Venipuncture",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 20,
-      "usage_examples": ["Daily blood draws in Paris general medicine wards", "65 specimens per shift at mobile clinics"]
+      "usage_examples": [
+        "Daily blood draws in Paris general medicine wards",
+        "65 specimens per shift at mobile clinics"
+      ]
     },
     {
       "id": "iv-access",
       "category": "Nursing — Clinical",
       "label": "IV Access & Line Management",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 20,
-      "usage_examples": ["Peripheral IVs in ER", "Central line monitoring in ICU"]
+      "usage_examples": [
+        "Peripheral IVs in ER",
+        "Central line monitoring in ICU"
+      ]
     },
     {
       "id": "immunizations",
       "category": "Nursing — Clinical",
       "label": "Immunization Administration",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 12,
-      "usage_examples": ["Corporate flu clinics", "School vaccination days", "Shingles, COVID-19, pneumococcal vaccines"]
+      "usage_examples": [
+        "Corporate flu clinics",
+        "School vaccination days",
+        "Shingles, COVID-19, pneumococcal vaccines"
+      ]
     },
     {
       "id": "critical-care",
       "category": "Nursing — Clinical",
       "label": "Critical Care / ICU",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 5,
-      "usage_examples": ["14-bed mixed ICU at Pullman Regional Hospital"]
+      "usage_examples": [
+        "14-bed mixed ICU at Pullman Regional Hospital"
+      ]
     },
     {
       "id": "emergency-triage",
       "category": "Nursing — Clinical",
       "label": "Emergency Triage & Assessment",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 4,
-      "usage_examples": ["Level I Trauma Center ER, NewYork-Presbyterian"]
+      "usage_examples": [
+        "Level I Trauma Center ER, NewYork-Presbyterian"
+      ]
     },
     {
       "id": "wound-care",
       "category": "Nursing — Clinical",
       "label": "Wound Care & Dressing Changes",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 10,
       "usage_examples": []
     },
@@ -219,7 +275,9 @@
       "id": "medication-admin",
       "category": "Nursing — Clinical",
       "label": "Medication Administration (IV, IM, SC, PO)",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 20,
       "usage_examples": []
     },
@@ -227,15 +285,22 @@
       "id": "emr",
       "category": "Nursing — Technology",
       "label": "EMR — Epic, Cerner, DxCare",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 14,
-      "usage_examples": ["Epic at NewYork-Presbyterian", "DxCare at AP-HP Paris"]
+      "usage_examples": [
+        "Epic at NewYork-Presbyterian",
+        "DxCare at AP-HP Paris"
+      ]
     },
     {
       "id": "hipaa",
       "category": "Nursing — Technology",
       "label": "HIPAA / Patient Confidentiality",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 14,
       "usage_examples": []
     },
@@ -243,15 +308,21 @@
       "id": "clia-compliance",
       "category": "Nursing — Technology",
       "label": "CLIA Waiver Compliance",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 4,
-      "usage_examples": ["Mobile clinic vehicle compliance, Northwest Mobile Health"]
+      "usage_examples": [
+        "Mobile clinic vehicle compliance, Northwest Mobile Health"
+      ]
     },
     {
       "id": "cold-chain",
       "category": "Nursing — Technology",
       "label": "Vaccine Cold-Chain Management",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "years_of_experience": 4,
       "usage_examples": []
     },
@@ -259,15 +330,23 @@
       "id": "french-classical",
       "category": "Culinary — Technique",
       "label": "French Classical Cuisine",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 16,
-      "usage_examples": ["Maison Dorée event menus", "Doe's Kitchen Co. weekly rotations", "Bistro at Home blog"]
+      "usage_examples": [
+        "Maison Dorée event menus",
+        "Doe's Kitchen Co. weekly rotations",
+        "Bistro at Home blog"
+      ]
     },
     {
       "id": "mise-en-place",
       "category": "Culinary — Technique",
       "label": "Mise en Place & Brigade Workflow",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 10,
       "usage_examples": []
     },
@@ -275,7 +354,9 @@
       "id": "sauce-stocks",
       "category": "Culinary — Technique",
       "label": "Mother Sauces & Classical Stocks",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 12,
       "usage_examples": []
     },
@@ -283,15 +364,21 @@
       "id": "pastry-basics",
       "category": "Culinary — Technique",
       "label": "Pastry & Viennoiserie Basics",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 8,
-      "usage_examples": ["Le Cordon Bleu Paris evening program"]
+      "usage_examples": [
+        "Le Cordon Bleu Paris evening program"
+      ]
     },
     {
       "id": "knife-skills",
       "category": "Culinary — Technique",
       "label": "Knife Skills & Butchery",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 16,
       "usage_examples": []
     },
@@ -299,47 +386,71 @@
       "id": "batch-cooking",
       "category": "Culinary — Technique",
       "label": "Batch Cooking & Meal Prep",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 10,
-      "usage_examples": ["200+ weekly portions at Doe's Kitchen Co."]
+      "usage_examples": [
+        "200+ weekly portions at Doe's Kitchen Co."
+      ]
     },
     {
       "id": "haccp",
       "category": "Culinary — Operations",
       "label": "Food Safety & HACCP",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 10,
-      "usage_examples": ["NYC DOH A-grade across 6 inspections"]
+      "usage_examples": [
+        "NYC DOH A-grade across 6 inspections"
+      ]
     },
     {
       "id": "menu-planning",
       "category": "Culinary — Operations",
       "label": "Menu Planning & Seasonal Sourcing",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 10,
-      "usage_examples": ["Rotating 4-week menus at Doe's Kitchen Co.", "Seasonal menus at Maison Dorée"]
+      "usage_examples": [
+        "Rotating 4-week menus at Doe's Kitchen Co.",
+        "Seasonal menus at Maison Dorée"
+      ]
     },
     {
       "id": "food-cost",
       "category": "Culinary — Operations",
       "label": "Food Cost Management & Yield Tracking",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 8,
-      "usage_examples": ["28% food cost ratio at Doe's Kitchen Co."]
+      "usage_examples": [
+        "28% food cost ratio at Doe's Kitchen Co."
+      ]
     },
     {
       "id": "supplier-mgmt",
       "category": "Culinary — Operations",
       "label": "Supplier Relations & Procurement",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "years_of_experience": 8,
-      "usage_examples": ["Rungis wholesale market sourcing in Paris"]
+      "usage_examples": [
+        "Rungis wholesale market sourcing in Paris"
+      ]
     },
     {
       "id": "team-leadership",
       "category": "Professional",
       "label": "Team Leadership & Mentoring",
-      "profile_ids": ["traveling-nurse", "culinary-apprentice"],
+      "profile_ids": [
+        "traveling-nurse",
+        "culinary-apprentice"
+      ],
       "years_of_experience": 14,
       "usage_examples": []
     },
@@ -347,15 +458,24 @@
       "id": "composure-pressure",
       "category": "Professional",
       "label": "Composure Under Pressure",
-      "profile_ids": ["traveling-nurse", "culinary-apprentice"],
+      "profile_ids": [
+        "traveling-nurse",
+        "culinary-apprentice"
+      ],
       "years_of_experience": 20,
-      "usage_examples": ["Code-blue first responder in ER", "Live event service for 180 guests"]
+      "usage_examples": [
+        "Code-blue first responder in ER",
+        "Live event service for 180 guests"
+      ]
     },
     {
       "id": "patient-communication",
       "category": "Professional",
       "label": "Patient & Guest Communication",
-      "profile_ids": ["traveling-nurse", "culinary-apprentice"],
+      "profile_ids": [
+        "traveling-nurse",
+        "culinary-apprentice"
+      ],
       "years_of_experience": 20,
       "usage_examples": []
     },
@@ -363,9 +483,15 @@
       "id": "bilingual",
       "category": "Professional",
       "label": "Bilingual — English / French",
-      "profile_ids": ["traveling-nurse", "culinary-apprentice"],
+      "profile_ids": [
+        "traveling-nurse",
+        "culinary-apprentice"
+      ],
       "years_of_experience": 44,
-      "usage_examples": ["Patient care in both languages", "French culinary terminology and recipe authorship"]
+      "usage_examples": [
+        "Patient care in both languages",
+        "French culinary terminology and recipe authorship"
+      ]
     }
   ],
   "education": [
@@ -376,7 +502,9 @@
       "school": "Institut de Formation en Soins Infirmiers — CHU de Lyon",
       "graduation_date": "June 2004",
       "notes": "3-year full-time program including 2,100 clinical placement hours across general medicine, surgery, pediatrics, and psychiatry. Equivalent to a BSN under French-US credential recognition.",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "cordon-bleu-paris",
@@ -385,7 +513,9 @@
       "school": "Le Cordon Bleu Paris",
       "graduation_date": "March 2008",
       "notes": "Two-semester evening program completed alongside full-time nursing. Covered classical sauce-making, butchery, pastry foundations, and à la minute plating.",
-      "profile_ids": ["culinary-apprentice"]
+      "profile_ids": [
+        "culinary-apprentice"
+      ]
     }
   ],
   "certifications": [
@@ -395,7 +525,9 @@
       "issuer": "American Heart Association",
       "date": "2024-03",
       "expiry": "2026-03",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "acls-cert",
@@ -403,14 +535,18 @@
       "issuer": "American Heart Association",
       "date": "2023-09",
       "expiry": "2025-09",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "cpt-cert",
       "name": "Certified Phlebotomy Technician (CPT-1)",
       "issuer": "National Phlebotomy Association",
       "date": "2012-11",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "wa-rn-license",
@@ -419,7 +555,9 @@
       "date": "2016-02",
       "expiry": "2026-02",
       "url": "https://doh.wa.gov",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "compact-rn",
@@ -427,7 +565,9 @@
       "issuer": "Nurse Licensure Compact",
       "date": "2020-01",
       "expiry": "2026-02",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "servsafe-cert",
@@ -435,14 +575,18 @@
       "issuer": "National Restaurant Association",
       "date": "2023-06",
       "expiry": "2028-06",
-      "profile_ids": ["culinary-apprentice"]
+      "profile_ids": [
+        "culinary-apprentice"
+      ]
     },
     {
       "id": "haccp-cert",
       "name": "HACCP Principles & Applications",
       "issuer": "NSF International",
       "date": "2019-04",
-      "profile_ids": ["culinary-apprentice"]
+      "profile_ids": [
+        "culinary-apprentice"
+      ]
     }
   ],
   "awards": [
@@ -452,7 +596,9 @@
       "issuer": "Pullman Regional Hospital",
       "date": "2019-05",
       "description": "Awarded annually to one nurse per department for outstanding patient care and peer mentorship; nominated by colleagues and selected by the Chief Nursing Officer.",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "nypresb-employee-month",
@@ -460,7 +606,9 @@
       "issuer": "NewYork-Presbyterian Hospital — Emergency Department",
       "date": "2015-01",
       "description": "Recognized for coordinating patient care during a mass-casualty event in the 2015 blizzard while serving as Charge Nurse on duty.",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "societe-gastro-award",
@@ -468,7 +616,9 @@
       "issuer": "Société Gastronomique de Paris",
       "date": "2011-11",
       "description": "Annual competition open to non-professional cooks. Awarded for a 5-course autumn menu featuring Île-de-France produce, including a venison consommé with black truffle and a tarte Tatin revisitée.",
-      "profile_ids": ["culinary-apprentice"]
+      "profile_ids": [
+        "culinary-apprentice"
+      ]
     }
   ],
   "publications": [
@@ -479,7 +629,9 @@
       "date": "2023-09",
       "url": "",
       "description": "Practical overview of patient positioning, vein visualization techniques, and psychological de-escalation for anxious patients during difficult blood draws. 1,200-word peer-reviewed contribution.",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     }
   ],
   "volunteer": [
@@ -488,7 +640,9 @@
       "organization": "American Red Cross",
       "role": "Volunteer Phlebotomist — Blood Drive Support",
       "dates": "2013 – Present (seasonal)",
-      "profile_ids": ["traveling-nurse"],
+      "profile_ids": [
+        "traveling-nurse"
+      ],
       "bullets": [
         "Staff community blood drives across the Seattle metro area as a licensed volunteer phlebotomist",
         "Guide first-time donors through the screening and collection process, minimizing adverse reactions through calm reassurance"
@@ -500,7 +654,9 @@
       "organization": "Compass Housing Alliance — Community Kitchen",
       "role": "Volunteer Cook",
       "dates": "2021 – Present (monthly)",
-      "profile_ids": ["culinary-apprentice"],
+      "profile_ids": [
+        "culinary-apprentice"
+      ],
       "bullets": [
         "Prepare and serve hot meals for 80–120 transitional housing residents monthly",
         "Develop seasonal menus that maximize nutrition and flavor within a $3-per-head food budget"
@@ -518,7 +674,9 @@
       "email": "s.martin@lariboisiere-example.fr",
       "phone": "+33 1 49 95 65 00",
       "notes": "Best reached by email. Speaks French and English.",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "ref-robert-chen",
@@ -529,7 +687,9 @@
       "email": "r.chen@nyp-example.org",
       "phone": "+1 (212) 555-0183",
       "notes": "",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     },
     {
       "id": "ref-claire-dupont",
@@ -540,7 +700,9 @@
       "email": "claire@maison-doree-example.fr",
       "phone": "+33 6 12 45 78 03",
       "notes": "Will speak to culinary creativity, professionalism under service pressure, and client relations.",
-      "profile_ids": ["culinary-apprentice"]
+      "profile_ids": [
+        "culinary-apprentice"
+      ]
     }
   ],
   "languages": [
@@ -548,19 +710,27 @@
       "id": "lang-fr",
       "name": "French",
       "proficiency": "Native",
-      "profile_ids": ["traveling-nurse", "culinary-apprentice"]
+      "profile_ids": [
+        "traveling-nurse",
+        "culinary-apprentice"
+      ]
     },
     {
       "id": "lang-en",
       "name": "English",
       "proficiency": "Fluent (C2)",
-      "profile_ids": ["traveling-nurse", "culinary-apprentice"]
+      "profile_ids": [
+        "traveling-nurse",
+        "culinary-apprentice"
+      ]
     },
     {
       "id": "lang-es",
       "name": "Spanish",
       "proficiency": "Basic (A2) — patient reassurance only",
-      "profile_ids": ["traveling-nurse"]
+      "profile_ids": [
+        "traveling-nurse"
+      ]
     }
   ]
 }
